@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3 uid="uid://dnvvtytpuha4i"]
+
+[ext_resource type="Script" path="res://tools/regular_polygon_2d.gd" id="1_atqfm"]
+
+[node name="RegularPolygon2D" type="Polygon2D"]
+polygon = PackedVector2Array(100, 0, 50, 86.6025, -50, 86.6025, -100, 1.22461e-14, -50, -86.6025, 50, -86.6025)
+script = ExtResource("1_atqfm")
+sides = 6

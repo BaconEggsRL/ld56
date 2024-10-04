@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3 uid="uid://c45xedln1cmjl"]
+
+[ext_resource type="Script" path="res://tools/super_line_2d.gd" id="1_ese3w"]
+
+[node name="SuperLine2D" type="Line2D"]
+points = PackedVector2Array(0, 0, 50, -50)
+width = 1.0
+script = ExtResource("1_ese3w")

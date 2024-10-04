@@ -1,0 +1,21 @@
+[gd_scene load_steps=4 format=3 uid="uid://cgf7ujs3uu2pv"]
+
+[ext_resource type="Script" path="res://entities/friend.gd" id="1_2fenn"]
+[ext_resource type="Script" path="res://tools/regular_polygon_2d.gd" id="1_sm4jb"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_8oepp"]
+
+[node name="friend" type="CharacterBody2D"]
+collision_layer = 2
+collision_mask = 2
+script = ExtResource("1_2fenn")
+
+[node name="RegularPolygon2D" type="Polygon2D" parent="."]
+color = Color(0, 0, 1, 1)
+polygon = PackedVector2Array(10, 0, 8.09017, 5.87785, 3.09017, 9.51056, -3.09017, 9.51056, -8.09017, 5.87785, -10, 1.22461e-15, -8.09017, -5.87785, -3.09017, -9.51056, 3.09017, -9.51056, 8.09017, -5.87785)
+script = ExtResource("1_sm4jb")
+sides = 10
+radius = 10.0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_8oepp")

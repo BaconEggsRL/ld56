@@ -1,0 +1,10 @@
+[gd_scene load_steps=2 format=3 uid="uid://ct2m2y37aq6k8"]
+
+[ext_resource type="Script" path="res://tools/super_collision_polygon_2d.gd" id="1_dyvw0"]
+
+[node name="SuperCollisionPolygon2D" type="CollisionPolygon2D"]
+polygon = PackedVector2Array(100, 0, -50, 86.6025, -50, -86.6025)
+script = ExtResource("1_dyvw0")
+
+[node name="Polygon2D" type="Polygon2D" parent="."]
+polygon = PackedVector2Array(100, 0, -50, 86.6025, -50, -86.6025)
