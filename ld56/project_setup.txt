@@ -1,0 +1,19 @@
+PROJECT EXPORT
+
+Initialize a new GitHub repository with godot .gitignore
+Edit the .gitignore file so that export_presets are uploaded
+Create folder _exports/html in the main project directory
+Create new Web Export preset in Godot. For the Web export path use "_exports/html/index.html"
+Zip these files into an "index.zip" folder for later.
+
+
+ITCH.IO
+Create new itch.io project with the same name as godot project
+Set project type to HTML; release status prototype
+Upload your index.zip and select "This file will be played in the browser"
+Set the viewport dimensions to match your Godot project. (The default godot viewport is 1152 X 648.)
+Select "SharedArrayBuffer support"
+Go to the project page, bookmark it, and ensure that it loads for the first time.
+
+LUDUM DARE
+
