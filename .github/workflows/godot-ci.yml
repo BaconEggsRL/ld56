@@ -42,11 +42,11 @@ jobs:
       - name: Build
         run: |
           ls
-          ./godot --headless --export-debug html
+          ./godot --headless --export-debug Web
 
       - name: Zip HTML Export
         run: |
-          cd exports/html
+          cd _exports/html
           zip $PROJECT_NAME-html.zip -r -m *
           mv $PROJECT_NAME-html.zip ..
           cd -
