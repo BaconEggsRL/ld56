@@ -4,7 +4,7 @@ name: Deploy to Itch.io
 on: workflow_dispatch
 
 env:
-  BUTLER_API_KEY: ${{secrets.ITCHIO_API_KEY}} # Repository Settings -> Secrets and variables -> Actions -> New repository secret
+  BUTLER_API_KEY: ${{secrets.BUTLER_API_KEY}} # Repository Settings -> Secrets and variables -> Actions -> New repository secret
   ITCHIO_USERNAME: ${{secrets.ITCHIO_USERNAME}}
   PROJECT_NAME: "ld56" # See README.md about project, channel, and export file naming conventions
 
