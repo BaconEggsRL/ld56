@@ -1,0 +1,42 @@
+PROJECT EXPORT
+Create folder _exports/html in the main project directory
+Create new Web Export preset in Godot. For the Web export path use "_exports/html/index.html"
+Zip these files into an "index.zip" folder for later.
+
+
+GITHUB REPO
+Initialize a new GitHub repository with godot .gitignore
+Edit the .gitignore file so that export_presets are uploaded
+Open and bookmark this repo in your browser
+
+
+ITCH.IO
+Create new itch.io project with the same name as godot project
+Set project type to HTML; release status prototype
+Upload your index.zip and select "This file will be played in the browser"
+Set the viewport dimensions to match your Godot project. (The default godot viewport is 1152 X 648.)
+Select "SharedArrayBuffer support"
+Go to the project page, bookmark it, and ensure that it loads for the first time.
+
+LUDUM DARE
+Open your game project and add links both to the GitHub source code, and your itch.io game.
+(During submission hour you can change those repos to public, or set them to public now.)
+
+
+
+AUTOMATION WITH GITHUB ACTIONS / ITCH.IO BUTLER
+Go back to GitHub and create a new Actions workflow
+
+Copy the contents of godot-ci.yaml file and edit as so:
+PROJECT_NAME: change to the name of your project
+BUTLER_API_KEY: Github Repository Settings -> Secrets and variables -> Actions -> New repository secret
+--> This is the API key associated with your Itch.io account under account settings, API keys
+ITCHIO_USERNAME: username associated with your itch.io account
+
+Pull latest after updating your .yaml file
+Update your godot project in some way and save it.
+Commit those changes and go back to GitHub actions.
+You should see a new workflow titled "Deploy to Itch.io"
+Click that and run the workflow.
+Check that all actions are completed successfully. It should take 1-3 minutes.
+(You may get an error when downloading and unzipping godot.)
