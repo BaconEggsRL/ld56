@@ -54,8 +54,8 @@ jobs:
       - name: Save Artifacts for Next Job
         uses: actions/upload-artifact@v4
         with:
-          name: exports
-          path: exports
+          name: _exports
+          path: _exports
 
   Publish:
     needs: Build
@@ -64,8 +64,8 @@ jobs:
       - name: Get Artifacts
         uses: actions/download-artifact@v4
         with:
-          name: exports
-          path: exports
+          name: _exports
+          path: _exports
 
       - name: Download Butler
         run: |
@@ -79,4 +79,4 @@ jobs:
 
       - name: Push To Itch
         run: |
-          ./butler push ./exports/$PROJECT_NAME-html.zip $ITCHIO_USERNAME/$PROJECT_NAME:html
+          ./butler push ./_exports/$PROJECT_NAME-html.zip $ITCHIO_USERNAME/$PROJECT_NAME:html
