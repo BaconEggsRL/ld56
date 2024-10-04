@@ -35,3 +35,7 @@ ITCHIO_USERNAME: username associated with your itch.io account
 
 Pull latest after updating your .yaml file
 Update your godot project in some way and save it.
+Commit those changes and go back to GitHub actions.
+You should see a new workflow titled "Deploy to Itch.io"
+Click that and run the workflow.
+Check that all actions are completed successfully. It should take 1-3 minutes.
