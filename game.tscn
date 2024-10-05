@@ -1,7 +1,11 @@
-[gd_scene load_steps=4 format=3 uid="uid://6b2hd2hrhx83"]
+[gd_scene load_steps=5 format=3 uid="uid://6b2hd2hrhx83"]
 
 [ext_resource type="PackedScene" uid="uid://cyfn0qt3k4q2i" path="res://entities/player.tscn" id="1_fln6j"]
 [ext_resource type="PackedScene" uid="uid://cgf7ujs3uu2pv" path="res://entities/friend.tscn" id="2_fmk3c"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_v2lyb"]
+font_size = 24
+font_color = Color(0, 0, 0, 1)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_2spsc"]
 size = Vector2(1210, 118)
@@ -19,6 +23,24 @@ custom_minimum_size = Vector2(1152, 648)
 layout_mode = 0
 offset_right = 40.0
 offset_bottom = 40.0
+
+[node name="GridContainer" type="GridContainer" parent="Control"]
+layout_mode = 0
+offset_left = 5.19
+offset_right = 68.19
+offset_bottom = 72.0
+
+[node name="num_friends_collected" type="Label" parent="Control/GridContainer"]
+layout_mode = 2
+text = "0 / 10"
+label_settings = SubResource("LabelSettings_v2lyb")
+horizontal_alignment = 1
+
+[node name="num_friends_available" type="Label" parent="Control/GridContainer"]
+layout_mode = 2
+text = "0 / 0"
+label_settings = SubResource("LabelSettings_v2lyb")
+horizontal_alignment = 1
 
 [node name="StaticBody2D" type="StaticBody2D" parent="."]
 collision_layer = 3
@@ -39,5 +61,7 @@ color = Color(0, 0, 0, 1)
 position = Vector2(535, 269)
 player = NodePath("../player")
 
-[node name="player" parent="." instance=ExtResource("1_fln6j")]
+[node name="player" parent="." node_paths=PackedStringArray("num_friends_collected_label", "num_friends_available_label") instance=ExtResource("1_fln6j")]
 position = Vector2(152, 232)
+num_friends_collected_label = NodePath("../Control/GridContainer/num_friends_collected")
+num_friends_available_label = NodePath("../Control/GridContainer/num_friends_available")
