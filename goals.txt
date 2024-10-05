@@ -65,14 +65,16 @@ Goals:
 # Add a script to calculate the throw trajectory and display on screen
 # Add a counter on the top left to indicate how many tiny friends are attached to the player (x1/10, x2/10)
 # When you throw one, the counter goes down. When one makes it back, the counter goes up. 
+# Make trajectory match mouse position
 
-Make trajectory match mouse position
+
+
+#Make friends bounce off of walls
+Fix right side bounce being worse than left side bounce
 
 
 
 Stretch goals:
-
- 
 
 Allow the player to employ multiple tiny friends at the same time, and chain them together.
 (If you have more than one come into contact, they automatically chain?

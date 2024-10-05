@@ -1,9 +1,10 @@
 extends CharacterBody2D
 
 
-const SPEED = 300.0
+const SPEED = 350.0
 const JUMP_VELOCITY = -400.0
 var THROW_POWER := Vector2(2.0, 2.0)
+# var MAX_THROW_VELOCITY := Vector2(500, 500)
 
 @onready var player_controlled = true
 signal changed_control
@@ -60,8 +61,12 @@ func _on_friend_available(friend) -> void:
 
 func get_throw_velocity() -> Array:
 
-	var mouse_pos : Vector2 = get_global_mouse_position()
+	
 	var start_pos : Vector2 = self.global_position
+	var mouse_pos : Vector2 = get_global_mouse_position()
+	#print(start_pos)
+	#print(mouse_pos)
+	
 	var launch_vector : Vector2 = mouse_pos - start_pos
 	var floor_vector : Vector2 = Vector2(start_pos.x, mouse_pos.x)
 	var dot_product = launch_vector.dot(floor_vector)
@@ -69,6 +74,19 @@ func get_throw_velocity() -> Array:
 	
 	var theta = acos(expression)
 	# print(rad_to_deg(theta))
+	
+	# print(floor_vector.x)
+	#if floor_vector.x < 50:
+		#if floor_vector.x < 25:
+			#THROW_POWER.x = 4.0
+		#else:
+			#THROW_POWER.x = 3.0
+	#else:
+		#THROW_POWER.x = 2.0
+	
+	
+	
+	
 	var throw_vel = Vector2(launch_vector.x * THROW_POWER.x, launch_vector.y * THROW_POWER.y)
 	# print(throw_vel)
 	

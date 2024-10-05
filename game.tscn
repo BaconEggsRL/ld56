@@ -7,11 +7,11 @@
 font_size = 24
 font_color = Color(0, 0, 0, 1)
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_nxxxn"]
-size = Vector2(38, 674)
-
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_2spsc"]
 size = Vector2(1210, 118)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_nxxxn"]
+size = Vector2(38, 674)
 
 [node name="game" type="Node2D"]
 
@@ -21,7 +21,7 @@ anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
 
-[node name="ColorRect" type="ColorRect" parent="Control"]
+[node name="bg" type="ColorRect" parent="Control"]
 custom_minimum_size = Vector2(1152, 648)
 layout_mode = 0
 offset_right = 40.0
@@ -45,28 +45,40 @@ text = "0 / 0"
 label_settings = SubResource("LabelSettings_v2lyb")
 horizontal_alignment = 1
 
-[node name="StaticBody2D" type="StaticBody2D" parent="."]
+[node name="center" type="ColorRect" parent="Control"]
+layout_mode = 2
+offset_left = 570.0
+offset_top = -40.0
+offset_right = 589.0
+offset_bottom = 707.0
+color = Color(1, 0, 1, 0.211765)
+
+[node name="floor" type="StaticBody2D" parent="." groups=["floor"]]
 collision_layer = 3
 collision_mask = 3
 
-[node name="CollisionShape2D2" type="CollisionShape2D" parent="StaticBody2D"]
-position = Vector2(-18, 328)
-shape = SubResource("RectangleShape2D_nxxxn")
-
-[node name="CollisionShape2D3" type="CollisionShape2D" parent="StaticBody2D"]
-position = Vector2(1170, 331)
-shape = SubResource("RectangleShape2D_nxxxn")
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="floor"]
 position = Vector2(580, 455)
 shape = SubResource("RectangleShape2D_2spsc")
 
-[node name="ColorRect" type="ColorRect" parent="StaticBody2D"]
+[node name="ColorRect" type="ColorRect" parent="floor"]
 offset_left = -27.0
 offset_top = 398.0
 offset_right = 1189.0
 offset_bottom = 518.0
 color = Color(0, 0, 0, 1)
+
+[node name="wall" type="StaticBody2D" parent="." groups=["wall"]]
+collision_layer = 3
+collision_mask = 3
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="wall"]
+position = Vector2(-19, 329)
+shape = SubResource("RectangleShape2D_nxxxn")
+
+[node name="CollisionShape2D3" type="CollisionShape2D" parent="wall"]
+position = Vector2(1171, 330)
+shape = SubResource("RectangleShape2D_nxxxn")
 
 [node name="friend" parent="." node_paths=PackedStringArray("player") instance=ExtResource("2_fmk3c")]
 position = Vector2(535, 269)

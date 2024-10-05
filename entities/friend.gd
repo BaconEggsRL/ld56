@@ -9,6 +9,7 @@ var AURA_LERP_SPEED = 4.0
 @export var player : CharacterBody2D
 @onready var following_player : bool = true
 
+@onready var control_marker = $control_marker
 @onready var collect_aura = $collect_aura
 @onready var collect_area = $collect_area
 @onready var collect_area_collision = collect_area.get_node("CollisionShape2D")
@@ -27,6 +28,7 @@ signal friend_available
 var lerp_color = false
 var COLOR_TRANSPARENT = Color(1,1,1,0)
 var COLOR_COLLECTABLE = Color(1,1,0,0.50)
+var COLOR_AVAILABLE = Color(0,1,0,0.50)
 var new_color = COLOR_COLLECTABLE
 
 
@@ -38,6 +40,7 @@ const TIME_STEP := 0.1 # Sec
 const GRAV_ACC := 9.8 # Meters/Sec^2
 
 var THROW_XDAMP_SPEED = 6.0
+var THROW_BOUNCE_DAMP = 0.4
 var THROW_VELOCITY : Vector2 = Vector2(500.0, -500.0)
 
 
@@ -76,11 +79,19 @@ func _on_thrown(_friend, throw_array):
 	
 	var vel = throw_array[0]
 	var _theta = throw_array[1]
-	
 	self.THROW_VELOCITY = vel
+	
+	print(vel.x)
+	######################################################
+	var damp_speed = remap(abs(vel.x), 0, 2300, 1, 7)
+	print(damp_speed)
+	self.THROW_XDAMP_SPEED = damp_speed
+	######################################################
+
+
 	self.available = false
 
-	new_color = COLOR_COLLECTABLE
+	new_color = COLOR_AVAILABLE
 	# collect_aura.color = new_color
 	collect_area_collision.call_deferred("set", "disabled", false)
 	collect_aura.show()
@@ -97,6 +108,11 @@ func _on_thrown(_friend, throw_array):
 	
 
 func _on_changed_control(player_controlled):
+	if player_controlled:
+		control_marker.hide()
+	else:
+		control_marker.show()
+		
 	self.following_player = player_controlled
 	if self.following_player:
 		self.collision_layer = 0
@@ -115,6 +131,8 @@ func _ready() -> void:
 	# solve_path(50, deg_to_rad(30))
 	friend_collected.connect(player._on_friend_collected)
 	friend_available.connect(player._on_friend_available)
+	control_marker.hide()
+	
 
 
 func _physics_process(delta: float) -> void:
@@ -145,12 +163,45 @@ func _physics_process(delta: float) -> void:
 					velocity.x = direction * SPEED
 				else:
 					velocity.x = move_toward(velocity.x, 0, SPEED)
+					
+				move_and_slide()
 				
-			else:
+				
+			else:  # thrown
 				velocity.x = move_toward(velocity.x, 0, THROW_XDAMP_SPEED)
-
-
-			move_and_slide()
+				
+				if not is_on_floor():
+					var temp_velocity = velocity
+					move_and_slide()
+					if get_slide_collision_count() > 0:
+						var collision = get_slide_collision(0)
+						if collision != null:
+							var collider = collision.get_collider()
+							if collider.is_in_group("wall"):
+								temp_velocity = temp_velocity.bounce(collision.get_normal()) * THROW_BOUNCE_DAMP*1.25
+								velocity = temp_velocity
+							if collider.is_in_group("floor"):
+								temp_velocity.y = temp_velocity.bounce(collision.get_normal()).y * THROW_BOUNCE_DAMP/1.75
+								velocity.y = temp_velocity.y
+					#var collision = move_and_collide(velocity * delta)
+					#if collision:
+						## print("COLLIDE")
+						#var collider = collision.get_collider()
+						## print(collider)
+						#if collider.is_in_group("wall"):
+							## print("wall")
+							#velocity = velocity.bounce(collision.get_normal()) * THROW_BOUNCE_DAMP
+						#if collider.is_in_group("floor"):
+							## print("floor")
+							## velocity = velocity.bounce(collision.get_normal()) * THROW_BOUNCE_DAMP
+							## move_and_slide()
+							#velocity = velocity.slide(collision.get_normal())
+							#pass
+					pass
+				else:
+					# print("floor2")
+					move_and_slide()
+					pass
 			
 		else:
 			
@@ -160,10 +211,15 @@ func _physics_process(delta: float) -> void:
 				var follow_pos = player_pos + Vector2(0, -y_offset*10)
 				self.position = self.position.lerp(follow_pos, delta * FOLLOW_SPEED)
 				
-			else:
+			else:  # thrown
 				
 				if not is_on_floor():
 					velocity += get_gravity() * delta
+					
+				#var collision = move_and_collide(velocity * delta)
+				#if collision:
+					#print("COLLIDE")
+					#velocity = velocity.bounce(collision.get_normal())
 				
 		
 
