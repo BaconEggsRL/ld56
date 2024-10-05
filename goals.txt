@@ -68,10 +68,16 @@ Goals:
 # Make trajectory match mouse position
 
 
-
 #Make friends bounce off of walls
-Fix right side bounce being worse than left side bounce
+# Fix right side bounce being worse than left side bounce
+# Handle collecting multiple friends at once and having them all follow you around
+# --hide marker for friends who are not available
 
+
+
+10 Levels (10 friends)
+
+Have friends interact with lever
 
 
 Stretch goals:

@@ -111,7 +111,8 @@ func _on_changed_control(player_controlled):
 	if player_controlled:
 		control_marker.hide()
 	else:
-		control_marker.show()
+		if self.available:
+			control_marker.show()
 		
 	self.following_player = player_controlled
 	if self.following_player:
