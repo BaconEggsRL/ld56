@@ -82,6 +82,8 @@ Goals:
 # --hide marker for friends who are not available
 # Friends should not collide with each other
 # -When control is activated, the green aura disappears. skip
+# tab to cycle through thrown friends?
+left click to throw all as a group?
 
 
 
@@ -93,14 +95,8 @@ Goals for today:
 
 
 
-move_and_slide()
-if not is_on_floor():
-	velocity += get_gravity() * delta
+=================================================================
 
-
-
-************Button to change control AFTER throwing***********
-(need separate RETURN and CONTROL buttons.)
 
 Create door that moves camera or changes scenes (user a fixed size window/vieport.)
 Add a lever object (or floor button) that friends can interact with (flip on/off)
@@ -115,11 +111,16 @@ Level 1: No friends, just door
 Level 2: Collect first friend
 
 
-# tab to cycle through thrown friends?
-			# left click to throw as a group
-
 
 Stretch goals:
+
+Add sounds:
+# jumping
+# throwing friends
+# bouncing friends
+# return
+# collecting new friend
+
 
 Allow the player to employ multiple tiny friends at the same time, and chain them together.
 (If you have more than one come into contact, they automatically chain?

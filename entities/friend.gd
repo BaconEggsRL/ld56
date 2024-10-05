@@ -210,6 +210,11 @@ func _physics_process(delta: float) -> void:
 								# print("wall")
 								temp_velocity = temp_velocity.bounce(collision.get_normal()) * THROW_BOUNCE_DAMP*1.25
 								if abs(temp_velocity.x) > MIN_X_BOUNCE:
+									var bounce_sound = player.sound.get_node("bounce")
+									# print("vx = ", temp_velocity.x)
+									var volume = remap(abs(temp_velocity.x), MIN_X_BOUNCE, 1024, -20.0, 0.0)
+									bounce_sound.volume_db = volume
+									bounce_sound.play()
 									velocity = temp_velocity
 								
 							if collider.is_in_group("floor"):

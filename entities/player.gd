@@ -30,11 +30,15 @@ signal friend_thrown
 @onready var trajectory = self.get_node("Line2D")
 @onready var trajectory_marker = self.get_node("Marker2D")
 
+@onready var sound : Node2D = $sound
 
 
 
 # when friend is first collected
 func _on_friend_collected(friend) -> void:
+	# play sound
+	sound.get_node("collect").play()
+	
 	# inc counts
 	num_friends_collected += 1
 	num_friends_returned += 1
@@ -56,6 +60,9 @@ func _on_friend_collected(friend) -> void:
 
 # when friend is recalled or returned
 func _on_friend_returned(friend) -> void:
+	
+	# play sound
+	sound.get_node("return").play()
 	
 	print("====================================")
 	print("BEFORE:")
@@ -228,6 +235,9 @@ func throw() -> void:
 					
 			if friend:
 				
+				# throw
+				sound.get_node("throw").play()
+				
 				# signal throw
 				friend_thrown.connect(friend._on_thrown)
 				friend_thrown.emit(friend, get_throw_velocity())
@@ -258,7 +268,9 @@ func _physics_process(delta: float) -> void:
 
 	# Check for return
 	if Input.is_action_just_pressed("return"):
-		request_return.emit()
+		if friends_thrown.size() > 0:
+			sound.get_node("return").play()
+			request_return.emit()
 			
 	# Check if changing input
 	if num_friends_collected > 0:
@@ -287,6 +299,7 @@ func _physics_process(delta: float) -> void:
 		# Handle jump.
 		if Input.is_action_just_pressed("ui_accept") and is_on_floor():
 			velocity.y = JUMP_VELOCITY
+			sound.get_node("jump").play()
 
 		# Get the input direction and handle the movement/deceleration.
 		# As good practice, you should replace UI actions with custom gameplay actions.
