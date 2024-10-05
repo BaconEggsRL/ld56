@@ -1,17 +1,24 @@
-[gd_scene load_steps=6 format=3 uid="uid://6b2hd2hrhx83"]
+[gd_scene load_steps=9 format=3 uid="uid://6b2hd2hrhx83"]
 
 [ext_resource type="PackedScene" uid="uid://cyfn0qt3k4q2i" path="res://entities/player.tscn" id="1_fln6j"]
 [ext_resource type="PackedScene" uid="uid://cgf7ujs3uu2pv" path="res://entities/friend.tscn" id="2_fmk3c"]
+[ext_resource type="Script" path="res://camera_2d.gd" id="3_b10ns"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_v2lyb"]
 font_size = 24
 font_color = Color(0, 0, 0, 1)
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_2spsc"]
-size = Vector2(1210, 118)
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_jsomm"]
+size = Vector2(1456, 118)
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_nxxxn"]
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ojfou"]
+size = Vector2(1337, 118)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ys0jq"]
 size = Vector2(38, 674)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_50b11"]
+size = Vector2(38, 243)
 
 [node name="game" type="Node2D"]
 
@@ -26,6 +33,14 @@ custom_minimum_size = Vector2(1152, 648)
 layout_mode = 0
 offset_right = 40.0
 offset_bottom = 40.0
+color = Color(1, 1, 1, 0.321569)
+
+[node name="bg2" type="ColorRect" parent="Control"]
+custom_minimum_size = Vector2(2304, 648)
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+color = Color(1, 1, 1, 0.321569)
 
 [node name="GridContainer" type="GridContainer" parent="Control"]
 layout_mode = 0
@@ -53,20 +68,48 @@ offset_right = 589.0
 offset_bottom = 707.0
 color = Color(1, 0, 1, 0.211765)
 
+[node name="exits" type="Node2D" parent="Control"]
+
+[node name="Polygon2D" type="Polygon2D" parent="Control/exits"]
+position = Vector2(1152, 318)
+color = Color(0.156863, 1, 1, 1)
+polygon = PackedVector2Array(-40, -88, 40, -88, 40, 88, -40, 88)
+
+[node name="Polygon2D2" type="Polygon2D" parent="Control/exits"]
+position = Vector2(2304, 318)
+color = Color(0.156863, 1, 1, 1)
+polygon = PackedVector2Array(-40, -88, 40, -88, 40, 88, -40, 88)
+
+[node name="Polygon2D3" type="Polygon2D" parent="Control/exits"]
+position = Vector2(3456, 318)
+color = Color(0.156863, 1, 1, 1)
+polygon = PackedVector2Array(-40, -88, 40, -88, 40, 88, -40, 88)
+
 [node name="floor" type="StaticBody2D" parent="." groups=["floor"]]
 collision_layer = 7
 collision_mask = 7
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="floor"]
-position = Vector2(580, 455)
-shape = SubResource("RectangleShape2D_2spsc")
-
 [node name="ColorRect" type="ColorRect" parent="floor"]
 offset_left = -27.0
 offset_top = 398.0
-offset_right = 1189.0
+offset_right = 1429.0
 offset_bottom = 518.0
 color = Color(0, 0, 0, 1)
+
+[node name="ColorRect2" type="ColorRect" parent="floor"]
+offset_left = 2059.0
+offset_top = 398.0
+offset_right = 3406.0
+offset_bottom = 518.0
+color = Color(0, 0, 0, 1)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="floor"]
+position = Vector2(703, 455)
+shape = SubResource("RectangleShape2D_jsomm")
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="floor"]
+position = Vector2(2727, 455)
+shape = SubResource("RectangleShape2D_ojfou")
 
 [node name="wall" type="StaticBody2D" parent="." groups=["wall"]]
 collision_layer = 7
@@ -74,22 +117,43 @@ collision_mask = 7
 
 [node name="CollisionShape2D2" type="CollisionShape2D" parent="wall"]
 position = Vector2(-19, 329)
-shape = SubResource("RectangleShape2D_nxxxn")
+shape = SubResource("RectangleShape2D_ys0jq")
 
 [node name="CollisionShape2D3" type="CollisionShape2D" parent="wall"]
-position = Vector2(1171, 330)
-shape = SubResource("RectangleShape2D_nxxxn")
+position = Vector2(1171, 114.5)
+shape = SubResource("RectangleShape2D_50b11")
 
-[node name="friend" parent="." instance=ExtResource("2_fmk3c")]
+[node name="CollisionShape2D4" type="CollisionShape2D" parent="wall"]
+position = Vector2(2304, 115)
+shape = SubResource("RectangleShape2D_50b11")
+
+[node name="friends" type="Node2D" parent="."]
+
+[node name="friend" parent="friends" instance=ExtResource("2_fmk3c")]
 position = Vector2(535, 269)
 
-[node name="friend2" parent="." instance=ExtResource("2_fmk3c")]
+[node name="friend2" parent="friends" instance=ExtResource("2_fmk3c")]
 position = Vector2(746, 259)
 
-[node name="friend3" parent="." instance=ExtResource("2_fmk3c")]
+[node name="friend3" parent="friends" instance=ExtResource("2_fmk3c")]
 position = Vector2(332, 260)
 
-[node name="player" parent="." node_paths=PackedStringArray("num_friends_collected_label", "num_friends_returned_label") instance=ExtResource("1_fln6j")]
+[node name="respawn" type="Node2D" parent="."]
+
+[node name="level_0" type="Marker2D" parent="respawn"]
+position = Vector2(152, 232)
+
+[node name="level_1" type="Marker2D" parent="respawn"]
+position = Vector2(1250, 343)
+
+[node name="Camera2D" type="Camera2D" parent="." node_paths=PackedStringArray("player")]
+anchor_mode = 0
+script = ExtResource("3_b10ns")
+player = NodePath("../player")
+
+[node name="player" parent="." node_paths=PackedStringArray("num_friends_collected_label", "num_friends_returned_label", "camera", "respawn") instance=ExtResource("1_fln6j")]
 position = Vector2(152, 232)
 num_friends_collected_label = NodePath("../Control/GridContainer/num_friends_collected")
 num_friends_returned_label = NodePath("../Control/GridContainer/num_friends_returned")
+camera = NodePath("../Camera2D")
+respawn = NodePath("../respawn")

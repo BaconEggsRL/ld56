@@ -32,6 +32,9 @@ signal friend_thrown
 
 @onready var sound : Node2D = $sound
 
+@export var camera : Camera2D
+@onready var death_y : float = camera.size.y + 64.0
+@export var respawn : Node2D
 
 
 # when friend is first collected
@@ -260,11 +263,26 @@ func throw() -> void:
 
 
 func _ready() -> void:
+	RenderingServer.set_default_clear_color(Color(1,1,1,1))
 	self.num_friends_collected_label.text = "0 / 10"
 	control_marker.visible = self.in_control
 
-
+	
+func _on_death() -> void:
+	
+	var level = self.camera.level
+	var node_str = "level_%s" % str(level)
+	# print(node_str)
+	var respawn_pt = self.respawn.get_node(node_str)
+	# print(respawn_pt)
+	
+	self.position = respawn_pt.position
+	
+	
 func _physics_process(delta: float) -> void:
+	
+	if self.position.y > death_y:
+		self._on_death()
 
 	# Check for return
 	if Input.is_action_just_pressed("return"):

@@ -93,12 +93,22 @@ Goals for today:
 # -You can only control one friend at a time.
 # -Pressing tab cycles through friends to control.
 
-
+Add sounds:
+# jumping
+# throwing friends
+# bouncing friends
+# return
+# collecting new friend
 
 =================================================================
 
 
-Create door that moves camera or changes scenes (user a fixed size window/vieport.)
+Goals:
+
+# Create camera that moves forward / backward based on x-position?
+# prevent moving backward?
+# Create door that moves camera or changes scenes (user a fixed size window/vieport.)
+
 Add a lever object (or floor button) that friends can interact with (flip on/off)
 
 Make lever cause a bridge to appear
@@ -112,15 +122,9 @@ Level 2: Collect first friend
 
 
 
+
+=================================================================
+
 Stretch goals:
-
-Add sounds:
-# jumping
-# throwing friends
-# bouncing friends
-# return
-# collecting new friend
-
-
 Allow the player to employ multiple tiny friends at the same time, and chain them together.
 (If you have more than one come into contact, they automatically chain?
