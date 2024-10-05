@@ -7,7 +7,7 @@ var FOLLOW_SPEED = 4.0
 var AURA_LERP_SPEED = 4.0
 
 @export var player : CharacterBody2D
-@onready var following_player : bool = true
+
 
 @onready var control_marker = $control_marker
 @onready var collect_aura = $collect_aura
@@ -18,12 +18,22 @@ var y_offset = 10
 
 
 @onready var collected : bool = false
+@onready var returned : bool = true  # when returned state
 @onready var thrown : bool = false
-@onready var available : bool = false
+@onready var in_control : bool = false  # when friends are in control
+
+var control_number : int
+var thrown_index : int
+# from Return you can Throw
+# after Throw you can Return or Control
+# after Control you cannot return. you can only Control or Cycle (tab)
+
+
+
 
 
 signal friend_collected
-signal friend_available
+signal friend_returned
 
 var lerp_color = false
 var COLOR_TRANSPARENT = Color(1,1,1,0)
@@ -76,20 +86,18 @@ func solve_path(v_0: Vector2, start: Vector2 = start_point.position + Vector2(0,
 
 
 func _on_thrown(_friend, throw_array):
+	self.returned = false
 	
 	var vel = throw_array[0]
 	var _theta = throw_array[1]
 	self.THROW_VELOCITY = vel
 	
-	print(vel.x)
+	# print(vel.x)
 	######################################################
 	var damp_speed = remap(abs(vel.x), 0, 2300, 1, 7)
-	print(damp_speed)
+	# print(damp_speed)
 	self.THROW_XDAMP_SPEED = damp_speed
 	######################################################
-
-
-	self.available = false
 
 	new_color = COLOR_AVAILABLE
 	# collect_aura.color = new_color
@@ -97,41 +105,45 @@ func _on_thrown(_friend, throw_array):
 	collect_aura.show()
 	
 	self.velocity = THROW_VELOCITY
-	
-	self.thrown = true
-	self.following_player = false
-	if self.following_player:
-		self.collision_layer = 0
-	else:
-		self.collision_layer = 2
 
-	
 
-func _on_changed_control(player_controlled):
-	if player_controlled:
-		control_marker.hide()
-	else:
-		if self.available:
-			control_marker.show()
-		
-	self.following_player = player_controlled
-	if self.following_player:
-		self.collision_layer = 0
-	else:
-		self.collision_layer = 2
-		
+
+func _on_changed_control(new_control_number):
 	
+	if self.collected:
+	
+		# switch control
+		if new_control_number != self.control_number:
+			self.in_control = false
+			control_marker.visible = false
+		else:
+			self.in_control = true
+			control_marker.visible = true
+
+		
+
+func _on_request_return():
+	# print("hello f")
+	if self.collected:
+		if not self.returned:
+			# print("returning")
+			_on_collect_area_body_entered(player)
 
 
 
 func _ready() -> void:
 	self.SPEED = player.SPEED
 	self.JUMP_VELOCITY = player.JUMP_VELOCITY
-	player.changed_control.connect(_on_changed_control)
 	self.collect_aura.color = COLOR_COLLECTABLE
 	# solve_path(50, deg_to_rad(30))
+	
 	friend_collected.connect(player._on_friend_collected)
-	friend_available.connect(player._on_friend_available)
+	friend_returned.connect(player._on_friend_returned)
+
+	player.changed_control.connect(_on_changed_control)
+	player.request_return.connect(_on_request_return)
+	
+	
 	control_marker.hide()
 	
 
@@ -144,15 +156,22 @@ func _physics_process(delta: float) -> void:
 			lerp_color = false
 			collect_aura.hide()
 
-	if collected:
-	
-		if not following_player:
-			# Add the gravity.
-			if not is_on_floor():
-				velocity += get_gravity() * delta
-				
-			if not thrown:	
 
+	if collected:
+		
+		if returned:
+			
+			var player_pos = player.position
+			var follow_pos = player_pos + Vector2(0, -y_offset*10)
+			self.position = self.position.lerp(follow_pos, delta * FOLLOW_SPEED)
+		
+		else:  # not returned
+			
+			if in_control:  # check if we have control
+				# Add the gravity.
+				if not is_on_floor():
+					velocity += get_gravity() * delta
+					
 				# Handle jump.
 				if Input.is_action_just_pressed("ui_accept") and is_on_floor():
 					velocity.y = JUMP_VELOCITY
@@ -166,14 +185,18 @@ func _physics_process(delta: float) -> void:
 					velocity.x = move_toward(velocity.x, 0, SPEED)
 					
 				move_and_slide()
+			
+			
+			else:  # not returned and not control (thrown)
 				
-				
-			else:  # thrown
 				velocity.x = move_toward(velocity.x, 0, THROW_XDAMP_SPEED)
 				
 				if not is_on_floor():
+					velocity += get_gravity() * delta
 					var temp_velocity = velocity
+					
 					move_and_slide()
+					
 					if get_slide_collision_count() > 0:
 						var collision = get_slide_collision(0)
 						if collision != null:
@@ -184,45 +207,11 @@ func _physics_process(delta: float) -> void:
 							if collider.is_in_group("floor"):
 								temp_velocity.y = temp_velocity.bounce(collision.get_normal()).y * THROW_BOUNCE_DAMP/1.75
 								velocity.y = temp_velocity.y
-					#var collision = move_and_collide(velocity * delta)
-					#if collision:
-						## print("COLLIDE")
-						#var collider = collision.get_collider()
-						## print(collider)
-						#if collider.is_in_group("wall"):
-							## print("wall")
-							#velocity = velocity.bounce(collision.get_normal()) * THROW_BOUNCE_DAMP
-						#if collider.is_in_group("floor"):
-							## print("floor")
-							## velocity = velocity.bounce(collision.get_normal()) * THROW_BOUNCE_DAMP
-							## move_and_slide()
-							#velocity = velocity.slide(collision.get_normal())
-							#pass
-					pass
+
 				else:
-					# print("floor2")
 					move_and_slide()
-					pass
-			
-		else:
-			
-			if not thrown:
-			
-				var player_pos = player.position
-				var follow_pos = player_pos + Vector2(0, -y_offset*10)
-				self.position = self.position.lerp(follow_pos, delta * FOLLOW_SPEED)
-				
-			else:  # thrown
-				
-				if not is_on_floor():
-					velocity += get_gravity() * delta
-					
-				#var collision = move_and_collide(velocity * delta)
-				#if collision:
-					#print("COLLIDE")
-					#velocity = velocity.bounce(collision.get_normal())
-				
-		
+
+
 
 
 func _on_collect_area_body_entered(body: Node2D) -> void:
@@ -232,23 +221,23 @@ func _on_collect_area_body_entered(body: Node2D) -> void:
 			collect_area_collision.call_deferred("set", "disabled", true)
 			# $Sound.play()
 			collect_area.hide()
-			# friend_collected.connect(player._on_friend_collected)
+
 			friend_collected.emit(self)
 			self.collected = true
-			self.available = true
+			self.returned = true
 			
 			# print_debug(self.collect_aura.color)
 			new_color = COLOR_TRANSPARENT
 			lerp_color = true
 			# collect_aura.hide()
 			
-		elif self.available == false:
+		else:
 			collect_area_collision.call_deferred("set", "disabled", true)
 			# $Sound.play()
 			collect_area.hide()
-			# friend_available.connect(player._on_friend_available)
-			friend_available.emit(self)
-			self.available = true
+			
+			friend_returned.emit(self)
+			self.returned = true
 			
 			# print_debug(self.collect_aura.color)
 			new_color = COLOR_TRANSPARENT

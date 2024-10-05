@@ -75,9 +75,59 @@ Goals:
 
 
 
-10 Levels (10 friends)
 
-Have friends interact with lever
+
+
+# Friends should not collide with each other
+
+-1 = player
+0 = collect_0
+1 = collect_1
+
+etc...
+how to make sure next control is available?
+
+
+
+player.request_return
+player.change_control
+
+player.thrown
+friend._on_thrown
+
+
+
+
+
+Goals for today:
+-Can only change control between friends that have been thrown (green aura).
+-Friends that have been returned stay returned when switching control.
+
+-When control is activated, the green aura disappears.
+
+
+-You can only control one friend at a time.
+-Pressing tab cycles through friends to control.
+
+
+************Button to change control AFTER throwing***********
+(need separate RETURN and CONTROL buttons.)
+
+Create door that moves camera or changes scenes (user a fixed size window/vieport.)
+Add a lever object (or floor button) that friends can interact with (flip on/off)
+
+Make lever cause a bridge to appear
+Add spikes that cause the level to reset (maybe just queue_free() until all players are dead?)
+          
+
+
+10 Levels (10 friends)
+Level 1: No friends, just door
+Level 2: Collect first friend
+
+
+# tab to cycle through thrown friends?
+			# left click to throw as a group
 
 
 Stretch goals:

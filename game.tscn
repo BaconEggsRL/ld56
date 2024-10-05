@@ -39,7 +39,7 @@ text = "0 / 10"
 label_settings = SubResource("LabelSettings_v2lyb")
 horizontal_alignment = 1
 
-[node name="num_friends_available" type="Label" parent="Control/GridContainer"]
+[node name="num_friends_returned" type="Label" parent="Control/GridContainer"]
 layout_mode = 2
 text = "0 / 0"
 label_settings = SubResource("LabelSettings_v2lyb")
@@ -54,8 +54,8 @@ offset_bottom = 707.0
 color = Color(1, 0, 1, 0.211765)
 
 [node name="floor" type="StaticBody2D" parent="." groups=["floor"]]
-collision_layer = 3
-collision_mask = 3
+collision_layer = 7
+collision_mask = 7
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="floor"]
 position = Vector2(580, 455)
@@ -69,8 +69,8 @@ offset_bottom = 518.0
 color = Color(0, 0, 0, 1)
 
 [node name="wall" type="StaticBody2D" parent="." groups=["wall"]]
-collision_layer = 3
-collision_mask = 3
+collision_layer = 7
+collision_mask = 7
 
 [node name="CollisionShape2D2" type="CollisionShape2D" parent="wall"]
 position = Vector2(-19, 329)
@@ -88,7 +88,7 @@ player = NodePath("../player")
 position = Vector2(841, 232)
 player = NodePath("../player")
 
-[node name="player" parent="." node_paths=PackedStringArray("num_friends_collected_label", "num_friends_available_label") instance=ExtResource("1_fln6j")]
+[node name="player" parent="." node_paths=PackedStringArray("num_friends_collected_label", "num_friends_returned_label") instance=ExtResource("1_fln6j")]
 position = Vector2(152, 232)
 num_friends_collected_label = NodePath("../Control/GridContainer/num_friends_collected")
-num_friends_available_label = NodePath("../Control/GridContainer/num_friends_available")
+num_friends_returned_label = NodePath("../Control/GridContainer/num_friends_returned")

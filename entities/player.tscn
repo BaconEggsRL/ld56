@@ -1,6 +1,7 @@
-[gd_scene load_steps=3 format=3 uid="uid://cyfn0qt3k4q2i"]
+[gd_scene load_steps=4 format=3 uid="uid://cyfn0qt3k4q2i"]
 
 [ext_resource type="Script" path="res://entities/player.gd" id="1_2rdnr"]
+[ext_resource type="Script" path="res://tools/regular_polygon_2d.gd" id="2_arpgj"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_kfmy4"]
 size = Vector2(40, 79)
@@ -17,3 +18,13 @@ color = Color(0, 0, 0, 1)
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(0, -39.5)
 shape = SubResource("RectangleShape2D_kfmy4")
+
+[node name="control_marker" type="Polygon2D" parent="."]
+position = Vector2(0, -97)
+rotation = 1.5708
+color = Color(0, 0, 1, 1)
+polygon = PackedVector2Array(10, 0, -5, 8.66025, -5, -8.66025)
+script = ExtResource("2_arpgj")
+radius = 10.0
+
+[connection signal="changed_control" from="." to="." method="_on_changed_control"]
