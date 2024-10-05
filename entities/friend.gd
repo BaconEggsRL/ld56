@@ -6,8 +6,8 @@ var JUMP_VELOCITY = -400.0
 var FOLLOW_SPEED = 4.0
 var AURA_LERP_SPEED = 4.0
 
-@onready var player : CharacterBody2D = get_tree().get_first_node_in_group("player")
 
+@onready var player : CharacterBody2D = get_tree().get_first_node_in_group("player")
 
 @onready var control_marker = $control_marker
 @onready var collect_aura = $collect_aura
@@ -29,7 +29,7 @@ var control_number : int
 # after Control you cannot return. you can only Control or Cycle (tab)
 
 
-
+@export var auto_attach : bool
 
 
 signal friend_collected
@@ -94,7 +94,7 @@ func _on_thrown(_friend, throw_array):
 	
 	# print(vel.x)
 	######################################################
-	var damp_speed = remap(abs(vel.x), 0, 2300, 1, 7)
+	var damp_speed = remap(abs(vel.x), 0, 2300, 1, 8)
 	# print(damp_speed)
 	self.THROW_XDAMP_SPEED = damp_speed
 	######################################################
@@ -135,12 +135,17 @@ func _on_request_return():
 			_on_collect_area_body_entered(player)
 
 
-
+func _on_death() -> void:
+	print("dead")
+	# var level = player.level
+	_on_request_return()
+	
+	
 func _ready() -> void:
+
 	self.SPEED = player.SPEED
 	self.JUMP_VELOCITY = player.JUMP_VELOCITY
 	self.collect_aura.color = COLOR_COLLECTABLE
-	# solve_path(50, deg_to_rad(30))
 	
 	friend_collected.connect(player._on_friend_collected)
 	friend_returned.connect(player._on_friend_returned)
@@ -148,12 +153,18 @@ func _ready() -> void:
 	player.changed_control.connect(_on_changed_control)
 	player.request_return.connect(_on_request_return)
 	
-	
 	control_marker.hide()
+	
+	if auto_attach:
+		await player.ready
+		_on_collect_area_body_entered(player)
 	
 
 
 func _physics_process(delta: float) -> void:
+	
+	if self.position.y > player.death_y:
+		self._on_death()
 	
 	if lerp_color:
 		self.collect_aura.color = self.collect_aura.color.lerp(new_color, delta * AURA_LERP_SPEED)

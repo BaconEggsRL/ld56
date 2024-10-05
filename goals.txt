@@ -109,6 +109,11 @@ Goals:
 # prevent moving backward?
 # Create door that moves camera or changes scenes (user a fixed size window/vieport.)
 
+
+# Fix trajectory (top should align with movement
+# add death
+
+
 Add a lever object (or floor button) that friends can interact with (flip on/off)
 
 Make lever cause a bridge to appear

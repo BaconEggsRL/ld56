@@ -1,6 +1,10 @@
 extends CharacterBody2D
 
 
+const MAX_TIME := 12. # Sec
+const TIME_STEP := 0.1 # Sec
+const GRAV_ACC := 9.8 # Meters/Sec^2
+
 const SPEED = 350.0
 const JUMP_VELOCITY = -400.0
 var THROW_POWER := Vector2(2.0, 2.0)
@@ -33,7 +37,7 @@ signal friend_thrown
 @onready var sound : Node2D = $sound
 
 @export var camera : Camera2D
-@onready var death_y : float = camera.size.y + 64.0
+@onready var death_y : float = camera.size.y + 128.0
 @export var respawn : Node2D
 
 
@@ -183,7 +187,7 @@ func charge_throw(charging := false) -> void:
 	if not charging or num_friends_returned == 0:
 		self.trajectory.hide()
 	
-	var start_pos = self.trajectory_marker.position - Vector2(0,64)
+	var start_pos = self.trajectory_marker.position - Vector2(0,128)
 	
 	if num_friends_collected > 0:
 		
@@ -207,12 +211,12 @@ func charge_throw(charging := false) -> void:
 					#########
 					# these are literally random constants I made up because it wasn't working
 					# local/global position or something idk
-					var vx = (throw_array[0].x / THROW_POWER.x) / 10  #########
-					var vy = (throw_array[0].y / THROW_POWER.y) / 4   #########
+					var vx = (throw_array[0].x / THROW_POWER.x) / 6  #########
+					var vy = (throw_array[0].y / THROW_POWER.y) / 5   #########
 					var test_velocity = Vector2(vx, vy)
 					#########
-					
-					self.trajectory.points = friend.solve_path(test_velocity, start_pos).points
+					# var test_velocity = throw_array[0]
+					self.trajectory.points = self.solve_path(test_velocity, start_pos).points
 					self.trajectory.show()
 			
 			else:
@@ -266,22 +270,23 @@ func _ready() -> void:
 	RenderingServer.set_default_clear_color(Color(1,1,1,1))
 	self.num_friends_collected_label.text = "0 / 10"
 	control_marker.visible = self.in_control
+	_on_death()
 
 	
 func _on_death() -> void:
 	
 	var level = self.camera.level
 	var node_str = "level_%s" % str(level)
-	# print(node_str)
+	print(node_str)
 	var respawn_pt = self.respawn.get_node(node_str)
-	# print(respawn_pt)
+	print(respawn_pt)
 	
 	self.position = respawn_pt.position
-	
+	self.velocity = Vector2(0,0)
 	
 func _physics_process(delta: float) -> void:
 	
-	if self.position.y > death_y:
+	if self.position.y > self.death_y:
 		self._on_death()
 
 	# Check for return
@@ -369,3 +374,37 @@ func get_throw_velocity() -> Array:
 	# print(throw_vel)
 	
 	return [throw_vel, theta]
+
+
+# theta in radians, otherwise use deg_to_rad() before-hand
+func solve_path(v_0: Vector2, start: Vector2 = trajectory_marker.position + Vector2(0,64)) -> Line2D:
+	
+	print("v_0 = ", v_0)
+	print("start = ", start)
+
+	var pts := PackedVector2Array([])
+	var t: float = 0.
+	var x: float = start.x
+	var y: float = start.y
+
+	# Godot y-axis is flipped
+	# var v_x: float = v_0 * cos(theta)
+	# var v_y: float = -v_0 * sin(theta)
+	var v_x: float = v_0.x
+	var v_y: float = v_0.y
+
+	# Very crude algorithm, specifically this is the "Euler method"
+	# For more sophesticated situations (ie > 1 projectile interacting with each other)
+	# use "Runge-Kutta Methods" or "Verlet Integration Methods"
+	while t < MAX_TIME: # No infinities
+		v_y += GRAV_ACC * TIME_STEP
+		v_x += 0 # No X Forces (no drag)
+		t += TIME_STEP
+		x += v_x * TIME_STEP
+		y += v_y * TIME_STEP
+		pts.push_back(Vector2(x, y))
+		if y > 400: # hit the ground
+			break
+	self.trajectory.points = pts
+	return self.trajectory
+	

@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://6b2hd2hrhx83"]
+[gd_scene load_steps=10 format=3 uid="uid://6b2hd2hrhx83"]
 
 [ext_resource type="PackedScene" uid="uid://cyfn0qt3k4q2i" path="res://entities/player.tscn" id="1_fln6j"]
 [ext_resource type="PackedScene" uid="uid://cgf7ujs3uu2pv" path="res://entities/friend.tscn" id="2_fmk3c"]
@@ -19,6 +19,9 @@ size = Vector2(38, 674)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_50b11"]
 size = Vector2(38, 243)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_diijl"]
+size = Vector2(38, 123)
 
 [node name="game" type="Node2D"]
 
@@ -127,10 +130,19 @@ shape = SubResource("RectangleShape2D_50b11")
 position = Vector2(2304, 115)
 shape = SubResource("RectangleShape2D_50b11")
 
+[node name="CollisionShape2D7" type="CollisionShape2D" parent="wall"]
+position = Vector2(2074, 460)
+shape = SubResource("RectangleShape2D_diijl")
+
+[node name="CollisionShape2D6" type="CollisionShape2D" parent="wall"]
+position = Vector2(1415, 459)
+shape = SubResource("RectangleShape2D_diijl")
+
 [node name="friends" type="Node2D" parent="."]
 
 [node name="friend" parent="friends" instance=ExtResource("2_fmk3c")]
 position = Vector2(535, 269)
+auto_attach = true
 
 [node name="friend2" parent="friends" instance=ExtResource("2_fmk3c")]
 position = Vector2(746, 259)
@@ -150,6 +162,7 @@ position = Vector2(1250, 343)
 anchor_mode = 0
 script = ExtResource("3_b10ns")
 player = NodePath("../player")
+level = 1
 
 [node name="player" parent="." node_paths=PackedStringArray("num_friends_collected_label", "num_friends_returned_label", "camera", "respawn") instance=ExtResource("1_fln6j")]
 position = Vector2(152, 232)

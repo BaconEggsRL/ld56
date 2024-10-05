@@ -1,6 +1,6 @@
 extends Camera2D
 
-signal changed_level
+# signal changed_level
 
 @export var player: CharacterBody2D
 @onready var player_x : float = get_player_x()
@@ -9,9 +9,9 @@ signal changed_level
 @onready var size = get_viewport().size
 @onready var dx = size.x
 
-@onready var next_x = dx
-@onready var prev_x = 0
-@onready var level : int = 0
+@export var level : int = 0
+@onready var next_x = level*dx + dx
+@onready var prev_x = level*dx + 0
 
 # show or hide debug print statements
 var debugging = false
@@ -31,6 +31,7 @@ func get_player_x():
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
+	self.global_position.x = prev_x
 	debug()
 	
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -46,7 +47,7 @@ func _process(_delta: float) -> void:
 		next_x += dx
 		prev_x += dx
 		level += 1
-		changed_level.emit()
+		# changed_level.emit()
 		debug()
 	
 	if player_x < prev_x - player_size_offset:
@@ -54,5 +55,5 @@ func _process(_delta: float) -> void:
 		next_x -= dx
 		prev_x -= dx
 		level -= 1
-		changed_level.emit()
+		# changed_level.emit()
 		debug()
