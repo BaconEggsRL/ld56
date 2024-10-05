@@ -24,10 +24,13 @@ signal friend_thrown
 # friends are appended to the end of the array as they come in. (last element)
 # and exit from the front of the array as they leave (element 0).
 
-@onready var charging_throw : bool = false
-
 @export var num_friends_collected_label : Label
 @export var num_friends_returned_label : Label
+
+@onready var trajectory = self.get_node("Line2D")
+@onready var trajectory_marker = self.get_node("Marker2D")
+
+
 
 
 # when friend is first collected
@@ -54,6 +57,15 @@ func _on_friend_collected(friend) -> void:
 # when friend is recalled or returned
 func _on_friend_returned(friend) -> void:
 	
+	print("====================================")
+	print("BEFORE:")
+	print("friends thrown = ", friends_thrown)
+	print("in_control = ", in_control)
+	print("num_friends_returned = ", num_friends_returned)
+	print("num_friends_collected = ", num_friends_collected)
+	print("current control_number = ", self.control_number)
+	print("====================================")
+	
 	# inc counts
 	friend.returned = true;
 	num_friends_returned += 1
@@ -63,18 +75,27 @@ func _on_friend_returned(friend) -> void:
 	self.num_friends_returned_label.text = available_string
 	
 	# go back to player control if none left
-	if num_friends_returned == num_friends_collected:
-		if in_control == false:
+	if not in_control:
+		# all friends returned
+		if num_friends_returned == num_friends_collected:
 			self.change_control(-1)
-	else:
-		if in_control == false:
+		# only one friend returned--switch to other friend
+		else:
+			print("**************this should be triggering***********************")
 			change_actor()
 	
 	# update thrown array (after changing actors, if needed)
 	self.friends_thrown.erase(friend)
 	
 	# friends_thrown = []
+	print("====================================")
+	print("AFTER:")
 	print("friends thrown = ", friends_thrown)
+	print("in_control = ", in_control)
+	print("num_friends_returned = ", num_friends_returned)
+	print("num_friends_collected = ", num_friends_collected)
+	print("current control_number = ", self.control_number)
+	print("====================================")
 	
 	
 
@@ -93,33 +114,35 @@ func _on_changed_control(new_control_number: int) -> void:
 # switch between 2 or more actors
 func change_actor() -> void:
 	
-	var current_control = self.control_number
+	print("changing actor")
 	
-	print("change actor, current control = ", current_control)
-	print("friends thrown = ", friends_thrown)
+	var current_control = self.control_number
+	var new_control_number
 	
 	# if player in control, go to first thrown
 	if current_control == -1:
-		self.change_control(friends_thrown[0].control_number)
+		new_control_number = friends_thrown[0].control_number
+		self.change_control(new_control_number)
 		return
 	
 	# otherwise get next control number
-	for f in friends_thrown:
+	var next_index
+	for i in range(friends_thrown.size()):
+		var f = friends_thrown[i]
 		if f.control_number == current_control:
-			print("found control")
-
-			var next_index = f.thrown_index+1
+			# print("found friend in control: ", f)
+			# print("with control number: ", f.control_number)
+			
+			next_index = i + 1
 			if next_index >= friends_thrown.size():
 				next_index = 0
-
-			var next_friend = friends_thrown[next_index]
-			var new_control_number = next_friend.control_number
+			new_control_number = friends_thrown[next_index].control_number
 			
-			print("new_control_number = ", new_control_number)
-			# self.change_control(new_control_number)
+			# print("next index is: ", next_index)
+			# print("with control number: ", new_control_number)
 			changed_control.emit(new_control_number)
+			break
 
-	
 
 
 # Switch control to thrown friends (non-returned) if they exist.
@@ -143,45 +166,53 @@ func change_control(new_control_number := self.control_number+1) -> void:
 			changed_control.emit(-1)
 		
 
-	## only change control if we have friends
-	#if num_friends_collected > 0:
-		#
-		## check input
-		#if new_control_number >= num_friends_collected:
-			#new_control_number = -1
-		#assert(new_control_number < num_friends_collected)
-		#assert(new_control_number >= -1)
-		#
-		#if new_control_number == -1:
-			#changed_control.emit(-1)
-			#return
-	#
-#
-		## we can only change control to thrown friends (not returned.)
-		## this mean number returned != number collected
-		#if num_friends_returned < num_friends_collected:
-#
-			#var f
-			#var found
-			#for i in range(num_friends_collected):
-				#f = friends_collected[i]
-				#if not f.returned and not f.in_control:
-					## Switch control to thrown friends (non-returned) if they exist.
-					## emit who is in control to all friends and self
-					#
-					#print("new_control_number = ", f.control_number)
-					#print("current control number = ", self.control_number)
-			#
-					#changed_control.emit(f.control_number)
-					#found = f
-					#break  # get first friend
-			#if not found:
-				#changed_control.emit(-1)
-				#return
 
+# show the trajectory
+func charge_throw(charging := false) -> void:
+	
+	if not charging or num_friends_returned == 0:
+		self.trajectory.hide()
+	
+	var start_pos = self.trajectory_marker.position - Vector2(0,64)
+	
+	if num_friends_collected > 0:
+		
+		if num_friends_returned > 0:
+			
+			if charging:
+		
+				# pick the first friend who is available to throw (0, 1, 2...)
+				var friend
+				for i in range(num_friends_collected):
+					var f = friends_collected[i]
+					if f.returned:
+						friend = f
+						break  # get first friend
 
+				if friend:
+					
+					# trajectory
+					var throw_array = get_throw_velocity()
+					
+					#########
+					# these are literally random constants I made up because it wasn't working
+					# local/global position or something idk
+					var vx = (throw_array[0].x / THROW_POWER.x) / 10  #########
+					var vy = (throw_array[0].y / THROW_POWER.y) / 4   #########
+					var test_velocity = Vector2(vx, vy)
+					#########
+					
+					self.trajectory.points = friend.solve_path(test_velocity, start_pos).points
+					self.trajectory.show()
+			
+			else:
+				self.trajectory.hide()
+
+							
+							
 # attept to throw a friend
 func throw() -> void:
+	
 	if num_friends_collected > 0:
 		
 		if num_friends_returned > 0:
@@ -197,10 +228,6 @@ func throw() -> void:
 					
 			if friend:
 				
-				# trajectory
-				var traj = friend.get_node("Line2D")
-				traj.hide()
-				
 				# signal throw
 				friend_thrown.connect(friend._on_thrown)
 				friend_thrown.emit(friend, get_throw_velocity())
@@ -208,7 +235,6 @@ func throw() -> void:
 				
 				# update thrown array
 				self.friends_thrown.append(friend)
-				friend.thrown_index = friends_thrown.size()-1
 				print("friends thrown = ", friends_thrown)
 				
 				# inc counts
@@ -217,7 +243,6 @@ func throw() -> void:
 				
 				# debug
 				print("(throw) control = ", friend.control_number)
-				print("(throw) index = ", friend.thrown_index)
 
 				# label
 				var available_string = "%s / %s" % [str(num_friends_returned), str(num_friends_collected)]
@@ -235,7 +260,6 @@ func _physics_process(delta: float) -> void:
 	if Input.is_action_just_pressed("return"):
 		request_return.emit()
 			
-			
 	# Check if changing input
 	if num_friends_collected > 0:
 		if Input.is_action_just_pressed("switch_actor"): # and is_on_floor():
@@ -249,39 +273,14 @@ func _physics_process(delta: float) -> void:
 	
 		# if player in control
 		if in_control:
-			
 			# throw
-			if Input.is_action_just_pressed("throw"):
-				if Input.is_action_pressed("charge_throw"):
+			if Input.is_action_pressed("charge_throw"):
+				self.charge_throw(true)
+				if Input.is_action_just_pressed("throw"):
 					self.throw()
-				else:  
-					# do nothing if charge throw button wasn't also pressed
-					pass
-			
-			# if not pressing throw
-			else:
 				
-				if friends_collected.size() > 0:
-					var friend = friends_collected[0]
-					var traj = friend.get_node("Line2D")
-					
-					if friend.returned:
-					
-						if Input.is_action_pressed("charge_throw"):
-							
-							var throw_array = get_throw_velocity()
-							#########
-							# these are literally random constants I made up because it wasn't working
-							# local/global position or something idk
-							var vx = (throw_array[0].x / THROW_POWER.x) / 10  #########
-							var vy = (throw_array[0].y / THROW_POWER.y) / 4   #########
-							var test = Vector2(vx, vy)
-							friend.solve_path(test)
-							
-							charging_throw = true
-							traj.show()
-						else:
-							traj.hide()
+			if Input.is_action_just_released("charge_throw"):
+				self.charge_throw(false)
 
 	
 	if in_control:

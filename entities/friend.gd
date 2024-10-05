@@ -14,7 +14,7 @@ var AURA_LERP_SPEED = 4.0
 @onready var collect_area = $collect_area
 @onready var collect_area_collision = collect_area.get_node("CollisionShape2D")
 
-var y_offset = 10
+var y_offset = 125
 
 
 @onready var collected : bool = false
@@ -23,7 +23,6 @@ var y_offset = 10
 @onready var in_control : bool = false  # when friends are in control
 
 var control_number : int
-var thrown_index : int
 # from Return you can Throw
 # after Throw you can Return or Control
 # after Control you cannot return. you can only Control or Cycle (tab)
@@ -55,7 +54,7 @@ var THROW_VELOCITY : Vector2 = Vector2(500.0, -500.0)
 
 
 # theta in radians, otherwise use deg_to_rad() before-hand
-func solve_path(v_0: Vector2, start: Vector2 = start_point.position + Vector2(0,64)):
+func solve_path(v_0: Vector2, start: Vector2 = start_point.position + Vector2(0,64)) -> Line2D:
 
 	var pts := PackedVector2Array([])
 	var t: float = 0.
@@ -81,7 +80,7 @@ func solve_path(v_0: Vector2, start: Vector2 = start_point.position + Vector2(0,
 		if y > 400: # hit the ground
 			break
 	line_node.points = pts
-	return
+	return line_node
 	
 
 
@@ -116,6 +115,7 @@ func _on_changed_control(new_control_number):
 		if new_control_number != self.control_number:
 			self.in_control = false
 			control_marker.visible = false
+			velocity.x = move_toward(velocity.x, 0, SPEED)
 		else:
 			self.in_control = true
 			control_marker.visible = true
@@ -162,7 +162,7 @@ func _physics_process(delta: float) -> void:
 		if returned:
 			
 			var player_pos = player.position
-			var follow_pos = player_pos + Vector2(0, -y_offset*10)
+			var follow_pos = player_pos + Vector2(0, -y_offset)
 			self.position = self.position.lerp(follow_pos, delta * FOLLOW_SPEED)
 		
 		else:  # not returned

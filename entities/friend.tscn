@@ -29,10 +29,12 @@ radius = 10.0
 shape = SubResource("CircleShape2D_8oepp")
 
 [node name="Line2D" type="Line2D" parent="."]
+visible = false
 width = 2.0
 default_color = Color(1, 0, 1, 1)
 
 [node name="Marker2D" type="Marker2D" parent="."]
+visible = false
 
 [node name="collect_area" type="Area2D" parent="."]
 

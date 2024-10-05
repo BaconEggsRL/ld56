@@ -55,6 +55,14 @@ Big map? , collect all 10  tiny friends
 
 tiny friends should be independent of each other by default
 
+signals:
+
+player.request_return
+player.change_control
+
+player.thrown
+friend._on_thrown
+
 
 Goals:
 # Define an arena with a platform that the main character can move around on.
@@ -72,42 +80,19 @@ Goals:
 # Fix right side bounce being worse than left side bounce
 # Handle collecting multiple friends at once and having them all follow you around
 # --hide marker for friends who are not available
-
-
-
-
-
-
 # Friends should not collide with each other
-
--1 = player
-0 = collect_0
-1 = collect_1
-
-etc...
-how to make sure next control is available?
-
-
-
-player.request_return
-player.change_control
-
-player.thrown
-friend._on_thrown
-
-
+# -When control is activated, the green aura disappears. skip
 
 
 
 Goals for today:
--Can only change control between friends that have been thrown (green aura).
--Friends that have been returned stay returned when switching control.
+# -Can only change control between friends that have been thrown (green aura).
+# -Friends that have been returned stay returned when switching control.
+# -You can only control one friend at a time.
+# -Pressing tab cycles through friends to control.
 
--When control is activated, the green aura disappears.
 
 
--You can only control one friend at a time.
--Pressing tab cycles through friends to control.
 
 
 ************Button to change control AFTER throwing***********
