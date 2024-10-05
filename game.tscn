@@ -1,4 +1,4 @@
-[gd_scene load_steps=5 format=3 uid="uid://6b2hd2hrhx83"]
+[gd_scene load_steps=6 format=3 uid="uid://6b2hd2hrhx83"]
 
 [ext_resource type="PackedScene" uid="uid://cyfn0qt3k4q2i" path="res://entities/player.tscn" id="1_fln6j"]
 [ext_resource type="PackedScene" uid="uid://cgf7ujs3uu2pv" path="res://entities/friend.tscn" id="2_fmk3c"]
@@ -6,6 +6,9 @@
 [sub_resource type="LabelSettings" id="LabelSettings_v2lyb"]
 font_size = 24
 font_color = Color(0, 0, 0, 1)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_nxxxn"]
+size = Vector2(38, 674)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_2spsc"]
 size = Vector2(1210, 118)
@@ -45,6 +48,14 @@ horizontal_alignment = 1
 [node name="StaticBody2D" type="StaticBody2D" parent="."]
 collision_layer = 3
 collision_mask = 3
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="StaticBody2D"]
+position = Vector2(-18, 328)
+shape = SubResource("RectangleShape2D_nxxxn")
+
+[node name="CollisionShape2D3" type="CollisionShape2D" parent="StaticBody2D"]
+position = Vector2(1170, 331)
+shape = SubResource("RectangleShape2D_nxxxn")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
 position = Vector2(580, 455)

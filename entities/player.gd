@@ -3,6 +3,7 @@ extends CharacterBody2D
 
 const SPEED = 300.0
 const JUMP_VELOCITY = -400.0
+var THROW_POWER := Vector2(2.0, 2.0)
 
 @onready var player_controlled = true
 signal changed_control
@@ -57,6 +58,23 @@ func _on_friend_available(friend) -> void:
 	self.num_friends_available_label.text = available_string
 
 
+func get_throw_velocity() -> Array:
+
+	var mouse_pos : Vector2 = get_global_mouse_position()
+	var start_pos : Vector2 = self.global_position
+	var launch_vector : Vector2 = mouse_pos - start_pos
+	var floor_vector : Vector2 = Vector2(start_pos.x, mouse_pos.x)
+	var dot_product = launch_vector.dot(floor_vector)
+	var expression = dot_product / (launch_vector.length() * floor_vector.length())
+	
+	var theta = acos(expression)
+	# print(rad_to_deg(theta))
+	var throw_vel = Vector2(launch_vector.x * THROW_POWER.x, launch_vector.y * THROW_POWER.y)
+	# print(throw_vel)
+	
+	return [throw_vel, theta]
+	
+
 
 func _ready() -> void:
 	self.num_friends_collected_label.text = "0 / 10"
@@ -76,13 +94,13 @@ func _physics_process(delta: float) -> void:
 		if player_controlled:
 			if Input.is_action_just_pressed("throw"):
 				if Input.is_action_pressed("charge_throw"):
-					print("throw")
+					# print("throw")
 					var friend = friends_available[0]
 					var traj = friend.get_node("Line2D")
 					traj.hide()
 					
 					thrown.connect(friend._on_thrown)
-					thrown.emit(friend)
+					thrown.emit(friend, get_throw_velocity())
 					thrown.disconnect(friend._on_thrown)
 					
 					# num friends available
@@ -92,7 +110,8 @@ func _physics_process(delta: float) -> void:
 	
 	
 				else:  
-					print("do nothing")
+					# print("do nothing")
+					pass
 					
 			else:
 				
@@ -101,8 +120,14 @@ func _physics_process(delta: float) -> void:
 				
 				if Input.is_action_pressed("charge_throw"):
 					
-					
-					friend.draw_trajectory()
+					var throw_array = get_throw_velocity()
+					#########
+					# these are literally random constants I made up because it wasn't working
+					# local/global position or something idk
+					var vx = (throw_array[0].x / THROW_POWER.x) / 10  #########
+					var vy = (throw_array[0].y / THROW_POWER.y) / 4   #########
+					var test = Vector2(vx, vy)
+					friend.solve_path(test)
 					
 					charging_throw = true
 					traj.show()

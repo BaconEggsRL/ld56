@@ -41,29 +41,19 @@ var THROW_XDAMP_SPEED = 6.0
 var THROW_VELOCITY : Vector2 = Vector2(500.0, -500.0)
 
 
-
-func draw_trajectory():
-	var mouse_pos : Vector2 = get_local_mouse_position()
-	var start_pos : Vector2 = Vector2(start_point.position.x, start_point.position.y)
-	var launch_vector : Vector2 = mouse_pos - start_pos
-	var floor_vector : Vector2 = Vector2(mouse_pos.x, start_point.position.y)
-	var dot_product = launch_vector.dot(floor_vector)
-	var expression = dot_product / (launch_vector.length() * floor_vector.length())
-	var theta = acos(expression)
-	# print(rad_to_deg(theta))
-	solve_path(mouse_pos.x - start_pos.x, theta)
-	
-	
 # theta in radians, otherwise use deg_to_rad() before-hand
-func solve_path(v_0: float, theta: float):
+func solve_path(v_0: Vector2, start: Vector2 = start_point.position + Vector2(0,64)):
+
 	var pts := PackedVector2Array([])
 	var t: float = 0.
-	var x: float = start_point.position.x
-	var y: float = start_point.position.y
+	var x: float = start.x
+	var y: float = start.y
 
 	# Godot y-axis is flipped
-	var v_x: float = v_0 * cos(theta)
-	var v_y: float = -v_0 * sin(theta)
+	# var v_x: float = v_0 * cos(theta)
+	# var v_y: float = -v_0 * sin(theta)
+	var v_x: float = v_0.x
+	var v_y: float = v_0.y
 
 	# Very crude algorithm, specifically this is the "Euler method"
 	# For more sophesticated situations (ie > 1 projectile interacting with each other)
@@ -82,8 +72,12 @@ func solve_path(v_0: float, theta: float):
 	
 
 
-func _on_thrown(_friend):
+func _on_thrown(_friend, throw_array):
 	
+	var vel = throw_array[0]
+	var _theta = throw_array[1]
+	
+	self.THROW_VELOCITY = vel
 	self.available = false
 
 	new_color = COLOR_COLLECTABLE
