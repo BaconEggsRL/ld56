@@ -1,14 +1,22 @@
-[gd_scene load_steps=4 format=3 uid="uid://cgf7ujs3uu2pv"]
+[gd_scene load_steps=5 format=3 uid="uid://cgf7ujs3uu2pv"]
 
 [ext_resource type="Script" path="res://entities/friend.gd" id="1_2fenn"]
 [ext_resource type="Script" path="res://tools/regular_polygon_2d.gd" id="1_sm4jb"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_8oepp"]
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_hp2rb"]
+
 [node name="friend" type="CharacterBody2D"]
 collision_layer = 2
 collision_mask = 2
 script = ExtResource("1_2fenn")
+
+[node name="collect_aura" type="Polygon2D" parent="."]
+color = Color(1, 1, 0, 0.501961)
+polygon = PackedVector2Array(100, 0, 80.9017, 58.7785, 30.9017, 95.1057, -30.9017, 95.1057, -80.9017, 58.7785, -100, 1.22461e-14, -80.9017, -58.7785, -30.9017, -95.1057, 30.9017, -95.1057, 80.9017, -58.7785)
+script = ExtResource("1_sm4jb")
+sides = 10
 
 [node name="RegularPolygon2D" type="Polygon2D" parent="."]
 color = Color(0, 0, 1, 1)
@@ -19,3 +27,16 @@ radius = 10.0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_8oepp")
+
+[node name="Line2D" type="Line2D" parent="."]
+width = 2.0
+default_color = Color(1, 0, 1, 1)
+
+[node name="Marker2D" type="Marker2D" parent="."]
+
+[node name="collect_area" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="collect_area"]
+shape = SubResource("RectangleShape2D_hp2rb")
+
+[connection signal="body_entered" from="collect_area" to="." method="_on_collect_area_body_entered"]
