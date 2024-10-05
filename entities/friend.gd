@@ -6,7 +6,7 @@ var JUMP_VELOCITY = -400.0
 var FOLLOW_SPEED = 4.0
 var AURA_LERP_SPEED = 4.0
 
-@export var player : CharacterBody2D
+@onready var player : CharacterBody2D = get_tree().get_first_node_in_group("player")
 
 
 @onready var control_marker = $control_marker
@@ -15,6 +15,7 @@ var AURA_LERP_SPEED = 4.0
 @onready var collect_area_collision = collect_area.get_node("CollisionShape2D")
 
 var y_offset = 125
+var MIN_X_BOUNCE : float = 10.0
 
 
 @onready var collected : bool = false
@@ -115,7 +116,11 @@ func _on_changed_control(new_control_number):
 		if new_control_number != self.control_number:
 			self.in_control = false
 			control_marker.visible = false
+			
+			# fix velocity on changing control (prevent sliding)
 			velocity.x = move_toward(velocity.x, 0, SPEED)
+			
+			
 		else:
 			self.in_control = true
 			control_marker.visible = true
@@ -202,8 +207,11 @@ func _physics_process(delta: float) -> void:
 						if collision != null:
 							var collider = collision.get_collider()
 							if collider.is_in_group("wall"):
+								# print("wall")
 								temp_velocity = temp_velocity.bounce(collision.get_normal()) * THROW_BOUNCE_DAMP*1.25
-								velocity = temp_velocity
+								if abs(temp_velocity.x) > MIN_X_BOUNCE:
+									velocity = temp_velocity
+								
 							if collider.is_in_group("floor"):
 								temp_velocity.y = temp_velocity.bounce(collision.get_normal()).y * THROW_BOUNCE_DAMP/1.75
 								velocity.y = temp_velocity.y
