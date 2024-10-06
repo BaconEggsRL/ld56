@@ -1,5 +1,6 @@
 extends CharacterBody2D
 
+@onready var NUM_FRIENDS_TOTAL : int = get_tree().get_node_count_in_group("friend")
 
 const MAX_TIME := 12. # Sec
 const TIME_STEP := 0.1 # Sec
@@ -16,6 +17,8 @@ var THROW_POWER := Vector2(2.0, 2.0)
 signal request_return
 signal changed_control
 signal friend_thrown
+
+signal game_over
 
 # jumping
 @onready var jumping = false
@@ -52,8 +55,16 @@ signal friend_thrown
 # interactables
 @onready var interactables : Array[InteractableComponent] = []
 
+@onready var handle_input := true
 
 
+func gameover() -> void:
+	print("GAMEOVER")
+	self.handle_input = false
+	game_over.emit()
+	
+	
+	
 # when friend is first collected
 func _on_friend_collected(friend) -> void:
 	# play sound
@@ -69,12 +80,17 @@ func _on_friend_collected(friend) -> void:
 	print("(collect) control = ", friend.control_number)
 	
 	# num friends collected
-	var collected_string = "%s / 10" % str(num_friends_collected)
+	var collected_string = "%s / %s" % [str(num_friends_collected), str(NUM_FRIENDS_TOTAL)]
 	self.num_friends_collected_label.text = collected_string
 	
 	# num friends available
 	var available_string = "%s / %s" % [str(num_friends_returned), str(num_friends_collected)]
 	self.num_friends_returned_label.text = available_string
+	
+	#######################################
+	# check if game is over
+	if num_friends_collected >= NUM_FRIENDS_TOTAL:
+		gameover()
 	
 	
 
@@ -281,7 +297,12 @@ func throw() -> void:
 
 func _ready() -> void:
 	RenderingServer.set_default_clear_color(Color(1,1,1,1))
-	self.num_friends_collected_label.text = "0 / 10"
+	
+	# Define a format string with placeholder '%s'
+	var format_string ="0 / %s"
+	var actual_string = format_string % str(NUM_FRIENDS_TOTAL)
+	self.num_friends_collected_label.text = actual_string
+	
 	control_marker.visible = self.in_control
 	_on_death(false)
 
@@ -326,37 +347,37 @@ func _physics_process(delta: float) -> void:
 		self._on_death()
 
 	# Check for return
-	if Input.is_action_just_pressed("return"):
+	if Input.is_action_just_pressed("return") and handle_input:
 		if friends_thrown.size() > 0:
 			sound.get_node("return").play()
 			request_return.emit()
 			
 	# Check if changing input
 	if num_friends_collected > 0:
-		if Input.is_action_just_pressed("switch_actor"): # and is_on_floor():
+		if Input.is_action_just_pressed("switch_actor") and handle_input:
 			if friends_thrown.size() < 2:
 				self.change_control()
 			else:
 				self.change_actor()
 		
-		if Input.is_action_just_pressed("change_control"): # and is_on_floor():
+		if Input.is_action_just_pressed("change_control") and handle_input:
 			self.change_control()
 	
 		# if player in control
 		if in_control:
 			# throw
-			if Input.is_action_pressed("charge_throw"):
+			if Input.is_action_pressed("charge_throw") and handle_input:
 				self.charge_throw(true)
 				if Input.is_action_just_pressed("throw"):
 					self.throw()
 				
-			if Input.is_action_just_released("charge_throw"):
+			if Input.is_action_just_released("charge_throw") and handle_input:
 				self.charge_throw(false)
 
 	
 	if in_control:
 		
-		if Input.is_action_just_pressed("interact") and in_control:
+		if Input.is_action_just_pressed("interact") and handle_input:
 			for i in interactables:
 				print("interacting with: ", i)
 				i._on_interacted_with(self)
@@ -377,7 +398,7 @@ func _physics_process(delta: float) -> void:
 					jump_buffer = false
 							
 							
-		if Input.is_action_just_pressed("jump"):
+		if Input.is_action_just_pressed("jump") and handle_input:
 			if (is_on_floor() or coyote) and jumping == false:  # jump_available
 				if is_on_floor():
 					jump()
@@ -390,7 +411,9 @@ func _physics_process(delta: float) -> void:
 
 		# Get the input direction and handle the movement/deceleration.
 		# As good practice, you should replace UI actions with custom gameplay actions.
-		var direction := Input.get_axis("ui_left", "ui_right")
+		var direction
+		if handle_input:
+			direction = Input.get_axis("ui_left", "ui_right")
 		if direction:
 			velocity.x = direction * SPEED
 		else:

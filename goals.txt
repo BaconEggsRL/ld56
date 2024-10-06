@@ -116,8 +116,8 @@ Add spikes that cause the level to reset (maybe just queue_free() until all play
 
 Goals:
 
-End game -- once all friends are collected (do not hardcode, set to number on map.)
-Show end game screen
+# End game -- once all friends are collected (do not hardcode, set to number on map.)
+# Show end game screen
 
 Need level ideas, additional collectables / mechanics?
 -Keys (collect to unlock doors--add count to HUD? (some backtracking, maybe?)

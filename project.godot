@@ -22,6 +22,7 @@ floor=""
 wall=""
 friend=""
 camera=""
+win_label=""
 
 [input]
 
