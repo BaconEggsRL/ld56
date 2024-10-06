@@ -109,22 +109,20 @@ Add sounds:
 # Add a lever object (or floor button) that friends can interact with (flip on/off)
 # Make lever cause a bridge to appear
 # fix double jump on player script
-Add spikes that cause the level to reset (maybe just queue_free() until all players are dead?)
+# End game -- once all friends are collected (do not hardcode, set to number on map.)
+# Show end game screen
+
 
 =================================================================
 
 
 Goals:
 
-# End game -- once all friends are collected (do not hardcode, set to number on map.)
-# Show end game screen
-
 Need level ideas, additional collectables / mechanics?
 -Keys (collect to unlock doors--add count to HUD? (some backtracking, maybe?)
+-Bubbles (collectables such as keys can be stuck inside. Throw a friend to pop a bubble.)
 -Target/Push button (can be triggered on throw)
 
--Bubbles (collectables such as keys can be stuck inside. Throw a friend to pop a bubble.)
--Rocks/Boulders (can push--using players or friends? -- boulders can hide tiny places for friends to enter)
 
 Create 5 unique levels
 
@@ -132,9 +130,14 @@ Create 5 unique levels
 
 =================================================================
 
+
 Stretch goals:
 
+-Rocks/Boulders (can push--using players or friends? -- boulders can hide tiny places for friends to enter)
 Create 10 unique levels.
+
+-Add spikes that cause the level to reset (maybe just queue_free() until all players are dead?)
+
 Have some levels backtrack on each other (interconnected world.)
 
 CHAINING -- Allow the player to employ multiple tiny friends at the same time, and chain them together.
