@@ -87,11 +87,6 @@ func _on_friend_collected(friend) -> void:
 	var available_string = "%s / %s" % [str(num_friends_returned), str(num_friends_collected)]
 	self.num_friends_returned_label.text = available_string
 	
-	#######################################
-	# check if game is over
-	if num_friends_collected >= NUM_FRIENDS_TOTAL:
-		gameover()
-	
 	
 
 # when friend is recalled or returned
@@ -342,6 +337,13 @@ func _on_death(play_sound := true) -> void:
 
 # physics
 func _physics_process(delta: float) -> void:
+	
+	# check if game over
+	if num_friends_collected == NUM_FRIENDS_TOTAL:
+		if num_friends_collected == num_friends_returned:
+			gameover()
+			set_physics_process(false)
+			return
 	
 	if self.position.y > self.death_y:
 		self._on_death()

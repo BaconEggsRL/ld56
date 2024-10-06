@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=3 uid="uid://6b2hd2hrhx83"]
+[gd_scene load_steps=18 format=3 uid="uid://6b2hd2hrhx83"]
 
 [ext_resource type="PackedScene" uid="uid://cyfn0qt3k4q2i" path="res://entities/player.tscn" id="1_fln6j"]
 [ext_resource type="PackedScene" uid="uid://cgf7ujs3uu2pv" path="res://entities/friend.tscn" id="2_fmk3c"]
@@ -8,6 +8,7 @@
 [ext_resource type="LabelSettings" uid="uid://ohstfx0j2cjg" path="res://objects/header.tres" id="6_3hnhf"]
 [ext_resource type="LabelSettings" uid="uid://c0tsoxqpuedc1" path="res://objects/body.tres" id="7_4prw0"]
 [ext_resource type="LabelSettings" uid="uid://bl1kcv46rr2ys" path="res://objects/tiny.tres" id="8_lf3qf"]
+[ext_resource type="PackedScene" uid="uid://oai41udmii44" path="res://objects/key.tscn" id="9_v0rdg"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_jsomm"]
 size = Vector2(1456, 118)
@@ -174,10 +175,10 @@ toggled_body = NodePath("../../floors/level_2/hidden_1")
 position = Vector2(582, 255)
 
 [node name="friend2" parent="friends" instance=ExtResource("2_fmk3c")]
-position = Vector2(2628, 270)
+position = Vector2(2637, 248)
 
 [node name="friend3" parent="friends" instance=ExtResource("2_fmk3c")]
-position = Vector2(3028, 270)
+position = Vector2(3037, 248)
 
 [node name="respawn" type="Node2D" parent="."]
 
@@ -191,7 +192,6 @@ position = Vector2(1250, 343)
 position = Vector2(2433, 325)
 
 [node name="Camera2D" type="Camera2D" parent="." node_paths=PackedStringArray("player") groups=["camera"]]
-visible = false
 anchor_mode = 0
 script = ExtResource("3_b10ns")
 player = NodePath("../player")
@@ -210,6 +210,12 @@ horizontal_alignment = 1
 [node name="num_friends_returned" type="Label" parent="Camera2D/GridContainer"]
 layout_mode = 2
 text = "0 / 0"
+label_settings = SubResource("LabelSettings_v2lyb")
+horizontal_alignment = 1
+
+[node name="num_keys_available" type="Label" parent="Camera2D/GridContainer"]
+layout_mode = 2
+text = "0 keys"
 label_settings = SubResource("LabelSettings_v2lyb")
 horizontal_alignment = 1
 
@@ -256,7 +262,7 @@ num_friends_returned_label = NodePath("../Camera2D/GridContainer/num_friends_ret
 camera = NodePath("../Camera2D")
 respawn = NodePath("../respawn")
 
-[node name="Control2" type="Control" parent="."]
+[node name="text_control" type="Control" parent="."]
 custom_minimum_size = Vector2(1152, 648)
 layout_mode = 3
 anchors_preset = 0
@@ -264,7 +270,7 @@ offset_right = 1152.0
 offset_bottom = 648.0
 metadata/_edit_lock_ = true
 
-[node name="instructions" type="Control" parent="Control2"]
+[node name="instructions" type="Control" parent="text_control"]
 layout_mode = 1
 anchors_preset = 5
 anchor_left = 0.5
@@ -288,7 +294,7 @@ tooltip_text = "Welcome to Tiny Friends!
 "
 mouse_filter = 1
 
-[node name="VBoxContainer" type="VBoxContainer" parent="Control2/instructions"]
+[node name="VBoxContainer" type="VBoxContainer" parent="text_control/instructions"]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -302,21 +308,21 @@ offset_bottom = 36.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="instruction_label" type="Label" parent="Control2/instructions/VBoxContainer"]
+[node name="instruction_label" type="Label" parent="text_control/instructions/VBoxContainer"]
 layout_mode = 2
 mouse_filter = 1
 text = "Tiny Friends :)"
 label_settings = ExtResource("7_4prw0")
 horizontal_alignment = 1
 
-[node name="instruction_label2" type="Label" parent="Control2/instructions/VBoxContainer"]
+[node name="instruction_label2" type="Label" parent="text_control/instructions/VBoxContainer"]
 layout_mode = 2
 mouse_filter = 1
 text = "(mouse over this text for instructions)"
 label_settings = ExtResource("8_lf3qf")
 horizontal_alignment = 1
 
-[node name="interact" type="Label" parent="Control2/instructions"]
+[node name="interact" type="Label" parent="text_control/instructions"]
 layout_mode = 0
 offset_left = 1178.0
 offset_top = 59.0
@@ -324,5 +330,9 @@ offset_right = 1454.0
 offset_bottom = 82.0
 text = "Press E to interact with pink objects"
 label_settings = ExtResource("8_lf3qf")
+
+[node name="key" parent="." node_paths=PackedStringArray("key_text_label") instance=ExtResource("9_v0rdg")]
+position = Vector2(585, 376)
+key_text_label = NodePath("../Camera2D/GridContainer/num_keys_available")
 
 [connection signal="game_over" from="player" to="Camera2D/gameover" method="_on_player_game_over"]

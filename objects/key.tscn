@@ -1,0 +1,73 @@
+[gd_scene load_steps=3 format=3 uid="uid://oai41udmii44"]
+
+[ext_resource type="Script" path="res://objects/key.gd" id="1_kafo3"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_vom6k"]
+size = Vector2(13, 26)
+
+[node name="key" type="Node2D"]
+script = ExtResource("1_kafo3")
+
+[node name="lever_body" type="ColorRect" parent="."]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -2.0
+offset_top = 10.0
+offset_right = 5.0
+offset_bottom = 13.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(1, 0.333333, 1, 1)
+
+[node name="lever_arm" type="ColorRect" parent="."]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -75.5674
+offset_top = -35.0082
+offset_right = -73.5674
+offset_bottom = -28.0082
+grow_horizontal = 2
+grow_vertical = 2
+rotation = 0.872665
+pivot_offset = Vector2(5.85306, 98.0845)
+color = Color(1, 0.333333, 1, 1)
+
+[node name="lever_arm2" type="ColorRect" parent="."]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -75.5674
+offset_top = -43.0082
+offset_right = -73.5674
+offset_bottom = -33.0082
+grow_horizontal = 2
+grow_vertical = 2
+rotation = 0.872665
+pivot_offset = Vector2(5.85306, 98.0845)
+color = Color(1, 0.333333, 1, 1)
+
+[node name="lever_arm3" type="ColorRect" parent="."]
+offset_left = 0.432575
+offset_top = -13.0082
+offset_right = 3.43258
+offset_bottom = 12.9918
+rotation = -0.0027525
+pivot_offset = Vector2(5.85306, 98.0845)
+color = Color(1, 0.333333, 1, 1)
+
+[node name="Area2D" type="Area2D" parent="."]
+collision_layer = 15
+collision_mask = 15
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource("RectangleShape2D_vom6k")
+
+[connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]

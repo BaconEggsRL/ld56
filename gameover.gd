@@ -51,6 +51,6 @@ func _physics_process(delta: float) -> void:
 
 			if fade_bg.color.is_equal_approx(bg_color) or label.label_settings.font_color.is_equal_approx(label_color):
 				print("DONE")
-				get_tree().paused = true
+				# get_tree().paused = true
 				set_physics_process(false)
 				break
