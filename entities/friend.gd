@@ -7,6 +7,14 @@ var FOLLOW_SPEED = 4.0
 var AURA_LERP_SPEED = 4.0
 
 
+# float animation
+var float_time : float = 0
+var default_pos = Vector2(0,0)
+
+var amplitude : float = 10
+var frequency : float = 1.5
+
+
 # interactables
 @onready var interactables : Array[InteractableComponent] = []
 
@@ -155,6 +163,8 @@ func _on_death() -> void:
 	
 	
 func _ready() -> void:
+	
+	self.default_pos = self.global_position
 
 	self.SPEED = player.SPEED
 	self.JUMP_VELOCITY = player.JUMP_VELOCITY
@@ -295,7 +305,11 @@ func _physics_process(delta: float) -> void:
 				else:
 					move_and_slide()
 
-
+	else: # not collected
+		# print("not_collected")
+		float_time += delta * frequency
+		self.set_position(default_pos + Vector2(0, sin(float_time) * amplitude))
+		
 
 
 func _on_collect_area_body_entered(body: Node2D) -> void:
