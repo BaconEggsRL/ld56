@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://cyfn0qt3k4q2i"]
+[gd_scene load_steps=10 format=3 uid="uid://cyfn0qt3k4q2i"]
 
 [ext_resource type="Script" path="res://entities/player.gd" id="1_2rdnr"]
 [ext_resource type="Script" path="res://tools/regular_polygon_2d.gd" id="2_arpgj"]
@@ -7,6 +7,7 @@
 [ext_resource type="AudioStream" uid="uid://5qkdvcc0thwo" path="res://sounds/bounce.wav" id="5_rb66g"]
 [ext_resource type="AudioStream" uid="uid://b7betdsmodsm3" path="res://sounds/return.wav" id="6_avqtv"]
 [ext_resource type="AudioStream" uid="uid://cd67inedgn183" path="res://sounds/collect.wav" id="7_b3k55"]
+[ext_resource type="AudioStream" uid="uid://dqv12d8tjav0y" path="res://sounds/dead.wav" id="8_avllg"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_kfmy4"]
 size = Vector2(40, 79)
@@ -60,4 +61,17 @@ volume_db = -15.0
 [node name="collect" type="AudioStreamPlayer2D" parent="sound"]
 stream = ExtResource("7_b3k55")
 
+[node name="dead" type="AudioStreamPlayer2D" parent="sound"]
+stream = ExtResource("8_avllg")
+
+[node name="CoyoteTimer" type="Timer" parent="."]
+wait_time = 0.2
+one_shot = true
+
+[node name="JumpBuffer" type="Timer" parent="."]
+wait_time = 0.2
+one_shot = true
+
 [connection signal="changed_control" from="." to="." method="_on_changed_control"]
+[connection signal="timeout" from="CoyoteTimer" to="." method="_on_coyote_timer_timeout"]
+[connection signal="timeout" from="JumpBuffer" to="." method="_on_jump_buffer_timeout"]

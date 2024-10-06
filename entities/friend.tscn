@@ -49,4 +49,14 @@ polygon = PackedVector2Array(10, 0, -5, 8.66025, -5, -8.66025)
 script = ExtResource("1_sm4jb")
 radius = 10.0
 
+[node name="CoyoteTimer" type="Timer" parent="."]
+wait_time = 0.2
+one_shot = true
+
+[node name="JumpBuffer" type="Timer" parent="."]
+wait_time = 0.2
+one_shot = true
+
 [connection signal="body_entered" from="collect_area" to="." method="_on_collect_area_body_entered"]
+[connection signal="timeout" from="CoyoteTimer" to="." method="_on_coyote_timer_timeout"]
+[connection signal="timeout" from="JumpBuffer" to="." method="_on_jump_buffer_timeout"]

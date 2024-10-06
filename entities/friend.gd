@@ -6,6 +6,15 @@ var JUMP_VELOCITY = -400.0
 var FOLLOW_SPEED = 4.0
 var AURA_LERP_SPEED = 4.0
 
+# jumping
+@onready var jumping = false
+@onready var was_last_on_floor = false
+@onready var coyote = false
+@onready var jump_buffer = false
+@onready var coyote_timer = $CoyoteTimer
+@onready var jump_buffer_timer = $JumpBuffer
+
+
 
 @onready var player : CharacterBody2D = get_tree().get_first_node_in_group("player")
 
@@ -157,6 +166,7 @@ func _ready() -> void:
 	
 	if auto_attach:
 		await player.ready
+		print(player)
 		_on_collect_area_body_entered(player)
 	
 
@@ -187,10 +197,22 @@ func _physics_process(delta: float) -> void:
 				# Add the gravity.
 				if not is_on_floor():
 					velocity += get_gravity() * delta
+				else:
+					if jumping:
+						jumping = false
+					else:
+						if jump_buffer:
+							jump()
+							jump_buffer = false
 					
 				# Handle jump.
-				if Input.is_action_just_pressed("ui_accept") and is_on_floor():
-					velocity.y = JUMP_VELOCITY
+				if Input.is_action_just_pressed("jump"):
+					if (is_on_floor() or coyote):  # jump_available
+						jump()
+						print("jump")
+					else:
+						jump_buffer_time()
+						print("buffer")
 
 				# Get the input direction and handle the movement/deceleration.
 				# As good practice, you should replace UI actions with custom gameplay actions.
@@ -200,7 +222,18 @@ func _physics_process(delta: float) -> void:
 				else:
 					velocity.x = move_toward(velocity.x, 0, SPEED)
 					
+				# save last on floor
+				if is_on_floor() != was_last_on_floor:
+					was_last_on_floor = is_on_floor()
+					# print("was_last_on_floor = ", was_last_on_floor)
+					
+				# move and update on floor
 				move_and_slide()
+				
+				# check if different
+				if was_last_on_floor and not is_on_floor() and not jumping:
+					# print("coyote")
+					coyote_time()
 			
 			
 			else:  # not returned and not control (thrown)
@@ -267,3 +300,33 @@ func _on_collect_area_body_entered(body: Node2D) -> void:
 			new_color = COLOR_TRANSPARENT
 			lerp_color = true
 			# collect_aura.hide()
+
+
+
+
+func jump() -> void:
+	velocity.y = JUMP_VELOCITY
+	jumping = true
+	var jump_sound = player.sound.get_node("jump")
+	jump_sound.pitch_scale = 1.8
+	jump_sound.play()
+	# pitch_scale = 1.80, volume_db = -10.895
+
+func coyote_time() -> void:
+	# Delay for a set amount of time to still jump in air
+	coyote = true
+	coyote_timer.start()
+
+func _on_coyote_timer_timeout() -> void:
+	coyote = false
+	# print("coyote = ", coyote)
+
+func jump_buffer_time() -> void:
+	# Allow player to queue jumps while mid-air
+	jump_buffer = true
+	jump_buffer_timer.start()
+	print("jump_buffer = ", jump_buffer)
+	
+func _on_jump_buffer_timeout() -> void:
+	jump_buffer = false
+	print("jump_buffer = ", jump_buffer)

@@ -17,6 +17,13 @@ signal request_return
 signal changed_control
 signal friend_thrown
 
+# jumping
+@onready var jumping = false
+@onready var was_last_on_floor = false
+@onready var coyote = false
+@onready var jump_buffer = false
+@onready var coyote_timer = $CoyoteTimer
+@onready var jump_buffer_timer = $JumpBuffer
 
 @onready var control_number := -1
 
@@ -272,8 +279,10 @@ func _ready() -> void:
 	control_marker.visible = self.in_control
 	_on_death()
 
+
 	
 func _on_death() -> void:
+	self.sound.get_node("dead").play()
 	
 	var level = self.camera.level
 	var node_str = "level_%s" % str(level)
@@ -283,7 +292,24 @@ func _on_death() -> void:
 	
 	self.position = respawn_pt.position
 	self.velocity = Vector2(0,0)
-	
+
+
+
+
+
+
+
+##############################################################
+
+
+
+
+
+
+
+
+
+# physics
 func _physics_process(delta: float) -> void:
 	
 	if self.position.y > self.death_y:
@@ -319,10 +345,15 @@ func _physics_process(delta: float) -> void:
 
 	
 	if in_control:
+		
 		# Handle jump.
-		if Input.is_action_just_pressed("ui_accept") and is_on_floor():
-			velocity.y = JUMP_VELOCITY
-			sound.get_node("jump").play()
+		if Input.is_action_just_pressed("jump"):
+			if (is_on_floor() or coyote):  # jump_available
+				jump()
+				print("jump")
+			else:
+				jump_buffer_time()
+				print("buffer")
 
 		# Get the input direction and handle the movement/deceleration.
 		# As good practice, you should replace UI actions with custom gameplay actions.
@@ -335,12 +366,65 @@ func _physics_process(delta: float) -> void:
 	else:
 		velocity.x = move_toward(velocity.x, 0, SPEED)
 
-		# Add the gravity.
+	# Add the gravity.
 	if not is_on_floor():
 		velocity += get_gravity() * delta
+	else:
+		if jumping:
+			jumping = false
+		else:
+			if jump_buffer:
+				jump()
+				jump_buffer = false
+	
+	
+	
+	
+	# save last on floor
+	if is_on_floor() != was_last_on_floor:
+		was_last_on_floor = is_on_floor()
+		# print("was_last_on_floor = ", was_last_on_floor)
 		
-		
+	# move and update on floor
 	move_and_slide()
+	
+	# check if different
+	if was_last_on_floor and not is_on_floor() and not jumping:
+		# print("coyote")
+		coyote_time()
+	
+	
+
+
+
+
+func jump() -> void:
+	velocity.y = JUMP_VELOCITY
+	jumping = true
+	var jump_sound = sound.get_node("jump")
+	jump_sound.pitch_scale = 0.7
+	jump_sound.play()
+	# pitch_scale = 0.77, volume_db = -10.895
+
+func coyote_time() -> void:
+	# Delay for a set amount of time to still jump in air
+	coyote = true
+	coyote_timer.start()
+
+func _on_coyote_timer_timeout() -> void:
+	coyote = false
+	# print("coyote = ", coyote)
+
+func jump_buffer_time() -> void:
+	# Allow player to queue jumps while mid-air
+	jump_buffer = true
+	jump_buffer_timer.start()
+	print("jump_buffer = ", jump_buffer)
+	
+func _on_jump_buffer_timeout() -> void:
+	jump_buffer = false
+	print("jump_buffer = ", jump_buffer)
+
 
 
 

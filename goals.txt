@@ -114,6 +114,8 @@ Goals:
 # add death
 
 
+
+
 Add a lever object (or floor button) that friends can interact with (flip on/off)
 
 Make lever cause a bridge to appear
