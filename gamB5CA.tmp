@@ -7,7 +7,6 @@
 [ext_resource type="Script" path="res://gameover.gd" id="5_0ipdp"]
 [ext_resource type="LabelSettings" uid="uid://ohstfx0j2cjg" path="res://objects/header.tres" id="6_3hnhf"]
 [ext_resource type="LabelSettings" uid="uid://c0tsoxqpuedc1" path="res://objects/body.tres" id="7_4prw0"]
-[ext_resource type="LabelSettings" uid="uid://bl1kcv46rr2ys" path="res://objects/tiny.tres" id="8_lf3qf"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_jsomm"]
 size = Vector2(1456, 118)
@@ -33,6 +32,18 @@ size = Vector2(38, 214.5)
 [sub_resource type="LabelSettings" id="LabelSettings_v2lyb"]
 font_size = 24
 font_color = Color(0, 0, 0, 1)
+
+[sub_resource type="GDScript" id="GDScript_xkygi"]
+script/source = "extends Label
+
+
+func _on_instructions_mouse_entered() -> void:
+	pass
+
+
+func _on_instructions_mouse_exited() -> void:
+	pass # Replace with function body.
+"
 
 [node name="game" type="Node2D"]
 process_mode = 1
@@ -239,15 +250,12 @@ text = "YOU WIN"
 label_settings = ExtResource("6_3hnhf")
 
 [node name="msg_label" type="Label" parent="Camera2D/gameover" groups=["win_label"]]
-offset_left = 450.0
-offset_top = 273.0
-offset_right = 716.0
-offset_bottom = 414.0
-text = "Congrats!
-
-Press R to restart"
+offset_left = 507.0
+offset_top = 280.0
+offset_right = 654.0
+offset_bottom = 325.0
+text = "Congrats!"
 label_settings = ExtResource("7_4prw0")
-horizontal_alignment = 1
 
 [node name="player" parent="." node_paths=PackedStringArray("num_friends_collected_label", "num_friends_returned_label", "camera", "respawn") instance=ExtResource("1_fln6j")]
 position = Vector2(152, 232)
@@ -256,73 +264,43 @@ num_friends_returned_label = NodePath("../Camera2D/GridContainer/num_friends_ret
 camera = NodePath("../Camera2D")
 respawn = NodePath("../respawn")
 
-[node name="Control2" type="Control" parent="."]
-custom_minimum_size = Vector2(1152, 648)
+[node name="instructions" type="Control" parent="."]
+custom_minimum_size = Vector2(1152, 658)
 layout_mode = 3
-anchors_preset = 0
-offset_right = 1152.0
-offset_bottom = 648.0
-metadata/_edit_lock_ = true
-
-[node name="instructions" type="Control" parent="Control2"]
-layout_mode = 1
-anchors_preset = 5
-anchor_left = 0.5
-anchor_right = 0.5
-offset_left = -155.0
-offset_top = 4.0
-offset_right = 169.0
-offset_bottom = 101.0
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -1.0
+offset_top = 1.0
+offset_right = 1151.0
+offset_bottom = 659.0
 grow_horizontal = 2
-size_flags_horizontal = 4
-size_flags_vertical = 4
+grow_vertical = 2
+size_flags_horizontal = 6
+size_flags_vertical = 6
+mouse_filter = 1
+
+[node name="instruction_label" type="Label" parent="instructions"]
+offset_left = 471.0
+offset_top = 67.0
+offset_right = 693.0
+offset_bottom = 112.0
 tooltip_text = "Welcome to Tiny Friends!
 
 - Use WASD to move around, Spacebar to jump
+
+- Collect tiny friends (with the yellow auras) by running into them
+
 - Hold SHIFT + LEFT CLICK to throw your tiny friends
-- Thrown friends can be controlled. 
-- Press CONTROL to switch movement.
-- Press TAB to cycle through multiple.
-- Recall your friends at any time with RIGHT CLICK.
 
-"
-mouse_filter = 1
+- Thrown friends can be controlled.  Press CONTROL to switch movement control between player and tiny friends; and Press TAB to cycle through if you have more than one tiny friend
 
-[node name="VBoxContainer" type="VBoxContainer" parent="Control2/instructions"]
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -112.5
-offset_top = -36.0
-offset_right = 112.5
-offset_bottom = 36.0
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="instruction_label" type="Label" parent="Control2/instructions/VBoxContainer"]
-layout_mode = 2
+- Recall your friends at any time with RIGHT CLICK"
 mouse_filter = 1
 text = "Tiny Friends :)"
 label_settings = ExtResource("7_4prw0")
-horizontal_alignment = 1
-
-[node name="instruction_label2" type="Label" parent="Control2/instructions/VBoxContainer"]
-layout_mode = 2
-mouse_filter = 1
-text = "(mouse over this text for instructions)"
-label_settings = ExtResource("8_lf3qf")
-horizontal_alignment = 1
-
-[node name="interact" type="Label" parent="Control2/instructions"]
-layout_mode = 0
-offset_left = 1178.0
-offset_top = 59.0
-offset_right = 1454.0
-offset_bottom = 82.0
-text = "Press E to interact with pink objects"
-label_settings = ExtResource("8_lf3qf")
+script = SubResource("GDScript_xkygi")
 
 [connection signal="game_over" from="player" to="Camera2D/gameover" method="_on_player_game_over"]
+[connection signal="mouse_entered" from="instructions" to="instructions/instruction_label" method="_on_instructions_mouse_entered"]
+[connection signal="mouse_exited" from="instructions" to="instructions/instruction_label" method="_on_instructions_mouse_exited"]

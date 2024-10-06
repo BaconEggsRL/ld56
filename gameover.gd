@@ -15,12 +15,22 @@ const LERP_SPEED = 4.0
 @onready var labels = get_tree().get_nodes_in_group("win_label")
 
 
+func _process(_delta):
+	if Input.is_action_just_released("restart"):
+		# print("restart")
+		get_tree().reload_current_scene()
+
+
+
 func _ready() -> void:
 	self.hide()
 	# set hidden colors
 	fade_bg.color = bg_hidden_color
 	for label in labels:
-		label.label_settings.font_color = label_hidden_color
+		var temp_settings = LabelSettings.new()
+		temp_settings.font_color = label_hidden_color
+		temp_settings.font_size = label.label_settings.font_size
+		label.label_settings = temp_settings
 	
 
 func _on_player_game_over() -> void:

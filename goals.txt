@@ -111,7 +111,7 @@ Add sounds:
 # fix double jump on player script
 # End game -- once all friends are collected (do not hardcode, set to number on map.)
 # Show end game screen
-
+# restart button
 
 =================================================================
 
