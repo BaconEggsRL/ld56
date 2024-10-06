@@ -17,11 +17,13 @@ func _ready() -> void:
 func _on_lever_changed() -> void:
 	if is_toggled:
 		toggled_body.show()
+		# toggled_body.collision_layer = 3
 		toggled_body.set_collision_layer_value(1, true)
 		toggled_body.set_collision_layer_value(2, true)
 		toggled_body.set_collision_layer_value(3, true)
 	else:
 		toggled_body.hide()
+		# toggled_body.collision_layer = 0
 		toggled_body.set_collision_layer_value(1, false)
 		toggled_body.set_collision_layer_value(2, false)
 		toggled_body.set_collision_layer_value(3, false)

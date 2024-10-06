@@ -19,9 +19,6 @@ size = Vector2(574, 36)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ojfou"]
 size = Vector2(1337, 118)
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_3x3l5"]
-size = Vector2(604, 43)
-
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ys0jq"]
 size = Vector2(38, 674)
 
@@ -30,6 +27,9 @@ size = Vector2(38, 123)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_50b11"]
 size = Vector2(38, 214.5)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_3x3l5"]
+size = Vector2(604, 43)
 
 [sub_resource type="LabelSettings" id="LabelSettings_v2lyb"]
 font_size = 24
@@ -109,22 +109,6 @@ color = Color(0, 0, 0, 1)
 position = Vector2(2727, 455)
 shape = SubResource("RectangleShape2D_ojfou")
 
-[node name="hidden_1" type="StaticBody2D" parent="floors/level_2" groups=["floor"]]
-visible = false
-collision_layer = 7
-collision_mask = 7
-
-[node name="collision" type="CollisionShape2D" parent="floors/level_2/hidden_1"]
-position = Vector2(1745, 457.5)
-shape = SubResource("RectangleShape2D_3x3l5")
-
-[node name="color" type="ColorRect" parent="floors/level_2/hidden_1"]
-offset_left = 1444.0
-offset_top = 437.0
-offset_right = 2047.0
-offset_bottom = 477.0
-color = Color(1, 0.333333, 1, 1)
-
 [node name="walls" type="Node2D" parent="."]
 
 [node name="debug" type="StaticBody2D" parent="walls" groups=["wall"]]
@@ -167,7 +151,29 @@ shape = SubResource("RectangleShape2D_50b11")
 
 [node name="lever" parent="interactions" node_paths=PackedStringArray("toggled_body") instance=ExtResource("2_tckwm")]
 position = Vector2(2156, 334)
-toggled_body = NodePath("../../floors/level_2/hidden_1")
+toggled_body = NodePath("../dynamic/hidden_1")
+
+[node name="key" parent="interactions" node_paths=PackedStringArray("key_text_label") instance=ExtResource("9_v0rdg")]
+position = Vector2(585, 376)
+key_text_label = NodePath("../../Camera2D/GridContainer/num_keys_available")
+
+[node name="dynamic" type="Node2D" parent="interactions"]
+
+[node name="hidden_1" type="StaticBody2D" parent="interactions/dynamic" groups=["floor"]]
+visible = false
+collision_layer = 7
+collision_mask = 7
+
+[node name="collision" type="CollisionShape2D" parent="interactions/dynamic/hidden_1"]
+position = Vector2(1745, 457.5)
+shape = SubResource("RectangleShape2D_3x3l5")
+
+[node name="color" type="ColorRect" parent="interactions/dynamic/hidden_1"]
+offset_left = 1444.0
+offset_top = 437.0
+offset_right = 2047.0
+offset_bottom = 477.0
+color = Color(1, 0.333333, 1, 1)
 
 [node name="friends" type="Node2D" parent="."]
 
@@ -330,9 +336,5 @@ offset_right = 1454.0
 offset_bottom = 82.0
 text = "Press E to interact with pink objects"
 label_settings = ExtResource("8_lf3qf")
-
-[node name="key" parent="." node_paths=PackedStringArray("key_text_label") instance=ExtResource("9_v0rdg")]
-position = Vector2(585, 376)
-key_text_label = NodePath("../Camera2D/GridContainer/num_keys_available")
 
 [connection signal="game_over" from="player" to="Camera2D/gameover" method="_on_player_game_over"]

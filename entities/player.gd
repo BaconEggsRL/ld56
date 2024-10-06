@@ -421,7 +421,11 @@ func _physics_process(delta: float) -> void:
 		else:
 			velocity.x = move_toward(velocity.x, 0, SPEED)
 			
-	else:
+			
+	else: # if not in control
+		# Add the gravity.
+		if not is_on_floor():
+			velocity += get_gravity() * delta
 		velocity.x = move_toward(velocity.x, 0, SPEED)
 
 	
