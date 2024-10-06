@@ -18,6 +18,7 @@ const LERP_SPEED = 4.0
 func _process(_delta):
 	if Input.is_action_just_released("restart"):
 		# print("restart")
+		Global.resetGlobals()
 		get_tree().reload_current_scene()
 
 

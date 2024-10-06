@@ -19,14 +19,15 @@ func _ready() -> void:
 	max_x = camera.next_x + 100
 	
 	
-func _on_death() -> void:
+func _on_death(play_sound) -> void:
 	
 	# set dying
 	dying = true
 	self.freeze = true
 
 	# play death sound
-	Global.playSound("explode")
+	if play_sound:
+		Global.playSound("explode")
 	
 	# spawn new and kill self
 	Global.makeBoulder(spawn_position, min_x, max_x)
@@ -40,7 +41,7 @@ func _process(_delta: float) -> void:
 	if not dying:
 
 		if self.position.y > player.death_y:
-			self._on_death()
+			self._on_death(true)
 			return
 			
 		#if min_x:

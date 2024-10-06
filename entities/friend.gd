@@ -15,6 +15,10 @@ var amplitude : float = 10
 var frequency : float = 1.5
 
 
+# pushing
+@export var pushForce : float = 100.0
+
+
 # interactables
 @onready var interactables : Array[Area2D] = []
 
@@ -270,7 +274,15 @@ func _physics_process(delta: float) -> void:
 					# print("was_last_on_floor = ", was_last_on_floor)
 					
 				# move and update on floor
-				move_and_slide()
+				# move_and_slide()
+				# move and update on floor
+				if self.move_and_slide(): # true if collided
+					for i in self.get_slide_collision_count():
+						var collision = self.get_slide_collision(i)
+						var collider = collision.get_collider()
+						if collider.is_in_group("boulder"):
+							collider.apply_force(collision.get_normal() * -pushForce)
+							break
 				
 				# check if different
 				if was_last_on_floor and not is_on_floor() and not jumping:

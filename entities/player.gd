@@ -2,12 +2,14 @@ extends CharacterBody2D
 
 @onready var NUM_FRIENDS_TOTAL : int = get_tree().get_node_count_in_group("friend")
 
+var was_last_on_floor_position : Vector2
+
 const MAX_TIME := 12. # Sec
 const TIME_STEP := 0.1 # Sec
 const GRAV_ACC := 9.8 # Meters/Sec^2
 
 const SPEED = 350.0
-const JUMP_VELOCITY = -400.0
+const JUMP_VELOCITY = -450.0
 var THROW_POWER := Vector2(2.0, 2.0)
 # var MAX_THROW_VELOCITY := Vector2(500, 500)
 
@@ -21,7 +23,7 @@ signal friend_thrown
 signal game_over
 
 # pushing
-@export var pushForce = 500
+@export var pushForce : float = 300.0
 
 
 # jumping
@@ -312,16 +314,23 @@ func _ready() -> void:
 
 	
 func _on_death(play_sound := true) -> void:
+	var boulders = get_tree().get_nodes_in_group("boulder")
+	for boulder in boulders:
+		boulder._on_death(false)
+	
 	if play_sound:
 		self.sound.get_node("dead").play()
 	
 	var level = self.camera.level
 	var node_str = "level_%s" % str(level)
-	print(node_str)
-	var respawn_pt = self.respawn.get_node(node_str)
+	# print(node_str)
+	
+	
+	var respawn_pt = self.respawn.get_node(node_str).position
+	# var respawn_pt = self.was_last_on_floor_position
 	print(respawn_pt)
 	
-	self.position = respawn_pt.position
+	self.position = respawn_pt
 	self.velocity = Vector2(0,0)
 	
 	# sound.get_node("return").play()
@@ -453,13 +462,16 @@ func _physics_process(delta: float) -> void:
 	# save last on floor
 	if is_on_floor() != was_last_on_floor:
 		was_last_on_floor = is_on_floor()
+		was_last_on_floor_position = self.position
 		
 	# move and update on floor
 	if self.move_and_slide(): # true if collided
 		for i in self.get_slide_collision_count():
-			var col = self.get_slide_collision(i)
-			if col.get_collider().is_in_group("boulder"):
-				col.get_collider().apply_force(col.get_normal() * -pushForce)
+			var collision = self.get_slide_collision(i)
+			var collider = collision.get_collider()
+			if collider.is_in_group("boulder"):
+				collider.apply_force(collision.get_normal() * -pushForce)
+				break
 	# move_and_slide()
 	
 	# check if different

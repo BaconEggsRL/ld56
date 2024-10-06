@@ -17,7 +17,7 @@ func _ready() -> void:
 
 
 func unlock_door() -> void:
-	print("unlock door")
+	# print("unlock door")
 
 	Global.playSound("door")
 	Global.num_keys -= 1
@@ -30,8 +30,8 @@ func unlock_door() -> void:
 	
 # this signal gets called when the interactable area is interacted with
 func _on_interactable_area_interaction(_body: Node2D) -> void:
-	print("INTERACT with: ", _body)
-	print("try to unlock door")
+	# print("INTERACT with: ", _body)
+	# print("try to unlock door")
 	if Global.num_keys > 0:
 		unlock_door()
 	else:
@@ -51,9 +51,9 @@ func _on_label_color_timer_timeout() -> void:
 	
 	
 func _on_body_entered(body: Node2D) -> void:
-	print(body)
+	# print(body)
 	colliders.append(body)
-	print(colliders)
+	# print(colliders)
 	for group in groups:
 		if body.is_in_group(group):
 			body.interactables.append(interaction_area)
@@ -61,9 +61,9 @@ func _on_body_entered(body: Node2D) -> void:
 	
 	
 func _on_body_exited(body: Node2D) -> void:
-	print(body)
+	# print(body)
 	colliders.erase(body)
-	print(colliders)
+	# print(colliders)
 	for group in groups:
 		if body.is_in_group(group):
 			body.interactables.erase(interaction_area)
