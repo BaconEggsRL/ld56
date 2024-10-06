@@ -1,4 +1,4 @@
-[gd_scene load_steps=23 format=3 uid="uid://6b2hd2hrhx83"]
+[gd_scene load_steps=24 format=3 uid="uid://6b2hd2hrhx83"]
 
 [ext_resource type="PackedScene" uid="uid://cyfn0qt3k4q2i" path="res://entities/player.tscn" id="1_fln6j"]
 [ext_resource type="Script" path="res://interactions.gd" id="1_vxy2d"]
@@ -34,6 +34,9 @@ size = Vector2(14, 34.75)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_50b11"]
 size = Vector2(38, 227.25)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_45rd5"]
+size = Vector2(45, 593)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_3x3l5"]
 size = Vector2(604, 43)
@@ -166,6 +169,32 @@ shape = SubResource("RectangleShape2D_50b11")
 position = Vector2(3456, 104)
 shape = SubResource("RectangleShape2D_50b11")
 
+[node name="boulder_wall" type="StaticBody2D" parent="walls"]
+collision_layer = 8
+collision_mask = 8
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="walls/boulder_wall"]
+position = Vector2(2546.5, 269.5)
+shape = SubResource("RectangleShape2D_45rd5")
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="walls/boulder_wall"]
+position = Vector2(3237, 257)
+shape = SubResource("RectangleShape2D_45rd5")
+
+[node name="ColorRect" type="ColorRect" parent="walls/boulder_wall"]
+offset_left = 2525.0
+offset_top = -52.0
+offset_right = 2565.0
+offset_bottom = 758.0
+color = Color(0, 0, 0, 0.360784)
+
+[node name="ColorRect2" type="ColorRect" parent="walls/boulder_wall"]
+offset_left = 3217.0
+offset_top = -54.0
+offset_right = 3257.0
+offset_bottom = 756.0
+color = Color(0, 0, 0, 0.360784)
+
 [node name="interactions" type="Node2D" parent="."]
 script = ExtResource("1_vxy2d")
 
@@ -178,6 +207,12 @@ position = Vector2(585, 376)
 
 [node name="boulder" parent="interactions" instance=ExtResource("3_40tth")]
 position = Vector2(2756, 333)
+
+[node name="boulder2" parent="interactions" instance=ExtResource("3_40tth")]
+position = Vector2(2892, 301)
+
+[node name="boulder3" parent="interactions" instance=ExtResource("3_40tth")]
+position = Vector2(3031, 322)
 
 [node name="dynamic" type="Node2D" parent="interactions"]
 

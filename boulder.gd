@@ -43,11 +43,11 @@ func _process(_delta: float) -> void:
 			self._on_death()
 			return
 			
-		if min_x:
-			if self.position.x < min_x:
-				self._on_death()
-				return
-		if max_x:
-			if self.position.x > max_x:
-				self._on_death()
-				return
+		#if min_x:
+			#if self.position.x < min_x:
+				#self._on_death()
+				#return
+		#if max_x:
+			#if self.position.x > max_x:
+				#self._on_death()
+				#return

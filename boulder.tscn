@@ -10,8 +10,6 @@ size = Vector2(72, 72)
 collision_layer = 15
 collision_mask = 15
 mass = 0.1
-can_sleep = false
-freeze_mode = 1
 script = ExtResource("1_r0ar0")
 
 [node name="RegularPolygon2D" type="Polygon2D" parent="."]

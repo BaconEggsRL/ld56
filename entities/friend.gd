@@ -36,6 +36,9 @@ var frequency : float = 1.5
 @onready var collect_area = $collect_area
 @onready var collect_area_collision = collect_area.get_node("CollisionShape2D")
 
+@onready var collision_shape = $CollisionShape2D
+
+
 var y_offset = 125
 var MIN_X_BOUNCE : float = 10.0
 
@@ -124,6 +127,8 @@ func _on_thrown(_friend, throw_array):
 	# collect_aura.color = new_color
 	collect_area_collision.call_deferred("set", "disabled", false)
 	collect_aura.show()
+	
+	collision_shape.call_deferred("set", "disabled", false)
 	
 	self.velocity = THROW_VELOCITY
 
@@ -323,6 +328,7 @@ func _on_collect_area_body_entered(body: Node2D) -> void:
 			friend_collected.emit(self)
 			self.collected = true
 			self.returned = true
+			self.collision_shape.call_deferred("set", "disabled", true)
 			
 			# print_debug(self.collect_aura.color)
 			new_color = COLOR_TRANSPARENT
@@ -336,6 +342,7 @@ func _on_collect_area_body_entered(body: Node2D) -> void:
 			
 			friend_returned.emit(self)
 			self.returned = true
+			self.collision_shape.call_deferred("set", "disabled", true)
 			
 			# print_debug(self.collect_aura.color)
 			new_color = COLOR_TRANSPARENT
