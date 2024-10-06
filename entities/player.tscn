@@ -60,7 +60,7 @@ volume_db = -15.0
 
 [node name="collect" type="AudioStreamPlayer2D" parent="sound"]
 stream = ExtResource("7_b3k55")
-volume_db = -10.0
+volume_db = -5.0
 
 [node name="dead" type="AudioStreamPlayer2D" parent="sound"]
 stream = ExtResource("8_avllg")

@@ -19,6 +19,7 @@ signal friend_thrown
 
 # jumping
 @onready var jumping = false
+
 @onready var was_last_on_floor = false
 @onready var coyote = false
 @onready var jump_buffer = false
@@ -361,13 +362,31 @@ func _physics_process(delta: float) -> void:
 				i._on_interacted_with(self)
 		
 		# Handle jump.
+		#############################################################
+		
+		# Add the gravity.
+		if not is_on_floor():
+			velocity += get_gravity() * delta
+		else:
+			if jumping:
+				jumping = false
+			else:
+				if jump_buffer and not jumping:
+					jump()
+					print("jump_from_jump_buffer (JUMP BUFFER)")
+					jump_buffer = false
+							
+							
 		if Input.is_action_just_pressed("jump"):
-			if (is_on_floor() or coyote):  # jump_available
-				jump()
-				print("jump")
+			if (is_on_floor() or coyote) and jumping == false:  # jump_available
+				if is_on_floor():
+					jump()
+					print("jump_from_action_just_pressed (REGULAR)")
+				else:
+					jump()
+					print("jump_from_action_just_pressed (COYOTE)")
 			else:
 				jump_buffer_time()
-				print("buffer")
 
 		# Get the input direction and handle the movement/deceleration.
 		# As good practice, you should replace UI actions with custom gameplay actions.
@@ -380,47 +399,37 @@ func _physics_process(delta: float) -> void:
 	else:
 		velocity.x = move_toward(velocity.x, 0, SPEED)
 
-	# Add the gravity.
-	if not is_on_floor():
-		velocity += get_gravity() * delta
-	else:
-		if jumping:
-			jumping = false
-		else:
-			if jump_buffer:
-				jump()
-				jump_buffer = false
 	
+	#############################################################
+
 	
 	
 	
 	# save last on floor
 	if is_on_floor() != was_last_on_floor:
 		was_last_on_floor = is_on_floor()
-		# print("was_last_on_floor = ", was_last_on_floor)
 		
 	# move and update on floor
 	move_and_slide()
 	
 	# check if different
-	if was_last_on_floor and not is_on_floor() and not jumping:
+	if was_last_on_floor and not is_on_floor():
 		# print("coyote")
 		coyote_time()
-	
-	
 
 
 
 
 func jump() -> void:
-	velocity.y = JUMP_VELOCITY
 	jumping = true
+	velocity.y = JUMP_VELOCITY
 	var jump_sound = sound.get_node("jump")
 	jump_sound.pitch_scale = 0.7
 	jump_sound.play()
 	# pitch_scale = 0.77, volume_db = -10.895
 
 func coyote_time() -> void:
+	# print("coyote")
 	# Delay for a set amount of time to still jump in air
 	coyote = true
 	coyote_timer.start()
@@ -433,11 +442,11 @@ func jump_buffer_time() -> void:
 	# Allow player to queue jumps while mid-air
 	jump_buffer = true
 	jump_buffer_timer.start()
-	print("jump_buffer = ", jump_buffer)
+	# print("jump_buffer = ", jump_buffer)
 	
 func _on_jump_buffer_timeout() -> void:
 	jump_buffer = false
-	print("jump_buffer = ", jump_buffer)
+	# print("jump_buffer = ", jump_buffer)
 
 
 

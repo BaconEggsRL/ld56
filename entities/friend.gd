@@ -228,13 +228,13 @@ func _physics_process(delta: float) -> void:
 					if jumping:
 						jumping = false
 					else:
-						if jump_buffer:
+						if jump_buffer and not jumping:
 							jump()
 							jump_buffer = false
 					
 				# Handle jump.
 				if Input.is_action_just_pressed("jump"):
-					if (is_on_floor() or coyote):  # jump_available
+					if (is_on_floor() or coyote) and not jumping:  # jump_available
 						jump()
 						print("jump")
 					else:
@@ -334,6 +334,7 @@ func _on_collect_area_body_entered(body: Node2D) -> void:
 func jump() -> void:
 	velocity.y = JUMP_VELOCITY
 	jumping = true
+	
 	var jump_sound = player.sound.get_node("jump")
 	jump_sound.pitch_scale = 1.8
 	jump_sound.play()

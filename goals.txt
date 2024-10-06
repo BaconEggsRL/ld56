@@ -100,11 +100,6 @@ Add sounds:
 # return
 # collecting new friend
 
-=================================================================
-
-
-Goals:
-
 # Create camera that moves forward / backward based on x-position?
 # prevent moving backward?
 # Create door that moves camera or changes scenes (user a fixed size window/vieport.)
@@ -112,18 +107,33 @@ Goals:
 # add death
 # jump buffer and coyote time for player
 # jump buffer and coyote time for friends
-
-
-
 # Press "E" to interact
 # Add a lever object (or floor button) that friends can interact with (flip on/off)
-
-
-
-Make lever cause a bridge to appear
+# Make lever cause a bridge to appear
+# fix double jump on player script
 Add spikes that cause the level to reset (maybe just queue_free() until all players are dead?)
+
+=================================================================
+
+
+Goals:
+
+Need level ideas, additional collectables / mechanics?
+-Keys (collect to unlock doors--add count to HUD? (some backtracking, maybe?)
+-Bubbles (collectables such as keys can be stuck inside. Throw a friend to pop a bubble.)
+-Rocks/Boulders (can push--using players or friends? -- boulders can hide tiny places for friends to enter)
+
+
+
+
+
           
 
+
+
+=================================================================
+
+LEVELS:
 
 10 Levels (10 friends)
 Level 1: No friends, just door
@@ -138,6 +148,7 @@ Notes:
 Set level to debug in camera node export
 Change which friends are auto-attached 
 
+
 Stretch goals:
-Allow the player to employ multiple tiny friends at the same time, and chain them together.
+CHAINING -- Allow the player to employ multiple tiny friends at the same time, and chain them together.
 (If you have more than one come into contact, they automatically chain?

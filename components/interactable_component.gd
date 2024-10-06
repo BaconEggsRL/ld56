@@ -33,20 +33,20 @@ func _on_interacted_with(body: Node2D):
 
 
 func _on_body_entered(body: Node2D):
-	print(body)
+	# print(body)
 	colliders.append(body)
-	print(colliders)
+	# print(colliders)
 	for group in groups:
 		if body.is_in_group(group):
 			body.interactables.append(self)
-			print("interactables added = ", body.interactables)
+			# print("interactables added = ", body.interactables)
 	
 	
 func _on_body_exited(body: Node2D):
-	print(body)
+	# print(body)
 	colliders.erase(body)
-	print(colliders)
+	# print(colliders)
 	for group in groups:
 		if body.is_in_group(group):
 			body.interactables.erase(self)
-			print("interactables erased = ", body.interactables)
+			# print("interactables erased = ", body.interactables)

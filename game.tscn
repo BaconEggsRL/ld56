@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://6b2hd2hrhx83"]
+[gd_scene load_steps=13 format=3 uid="uid://6b2hd2hrhx83"]
 
 [ext_resource type="PackedScene" uid="uid://cyfn0qt3k4q2i" path="res://entities/player.tscn" id="1_fln6j"]
 [ext_resource type="PackedScene" uid="uid://cgf7ujs3uu2pv" path="res://entities/friend.tscn" id="2_fmk3c"]
@@ -7,6 +7,9 @@
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_jsomm"]
 size = Vector2(1456, 118)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_qkm1s"]
+size = Vector2(574, 36)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ojfou"]
 size = Vector2(1337, 118)
@@ -17,11 +20,11 @@ size = Vector2(604, 43)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ys0jq"]
 size = Vector2(38, 674)
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_50b11"]
-size = Vector2(38, 214.5)
-
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_diijl"]
 size = Vector2(38, 123)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_50b11"]
+size = Vector2(38, 214.5)
 
 [sub_resource type="LabelSettings" id="LabelSettings_v2lyb"]
 font_size = 24
@@ -52,86 +55,118 @@ position = Vector2(3456, 318)
 color = Color(0.156863, 1, 1, 1)
 polygon = PackedVector2Array(-40, -88, 40, -88, 40, 88, -40, 88)
 
-[node name="floor" type="StaticBody2D" parent="." groups=["floor"]]
+[node name="floors" type="Node2D" parent="."]
+
+[node name="level_1" type="StaticBody2D" parent="floors" groups=["floor"]]
 collision_layer = 7
 collision_mask = 7
 
-[node name="ColorRect" type="ColorRect" parent="floor"]
+[node name="color_1" type="ColorRect" parent="floors/level_1"]
 offset_left = -27.0
 offset_top = 398.0
 offset_right = 1429.0
 offset_bottom = 518.0
 color = Color(0, 0, 0, 1)
 
-[node name="ColorRect2" type="ColorRect" parent="floor"]
+[node name="level_1" type="CollisionShape2D" parent="floors/level_1"]
+position = Vector2(703, 455)
+shape = SubResource("RectangleShape2D_jsomm")
+
+[node name="test" type="StaticBody2D" parent="floors/level_1" groups=["floor"]]
+position = Vector2(-124, 5)
+collision_layer = 7
+collision_mask = 7
+
+[node name="test_color" type="ColorRect" parent="floors/level_1/test"]
+offset_left = 422.0
+offset_top = 312.0
+offset_right = 995.0
+offset_bottom = 348.0
+color = Color(0, 0, 0, 1)
+
+[node name="test" type="CollisionShape2D" parent="floors/level_1/test"]
+position = Vector2(709, 329)
+shape = SubResource("RectangleShape2D_qkm1s")
+
+[node name="level_2" type="StaticBody2D" parent="floors" groups=["floor"]]
+collision_layer = 7
+collision_mask = 7
+
+[node name="color_2" type="ColorRect" parent="floors/level_2"]
 offset_left = 2059.0
 offset_top = 398.0
 offset_right = 3406.0
 offset_bottom = 518.0
 color = Color(0, 0, 0, 1)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="floor"]
-position = Vector2(703, 455)
-shape = SubResource("RectangleShape2D_jsomm")
-
-[node name="CollisionShape2D2" type="CollisionShape2D" parent="floor"]
+[node name="level_2" type="CollisionShape2D" parent="floors/level_2"]
 position = Vector2(2727, 455)
 shape = SubResource("RectangleShape2D_ojfou")
 
-[node name="hidden_1" type="StaticBody2D" parent="floor" groups=["floor"]]
+[node name="hidden_1" type="StaticBody2D" parent="floors/level_2" groups=["floor"]]
 visible = false
 collision_layer = 7
 collision_mask = 7
 
-[node name="collision" type="CollisionShape2D" parent="floor/hidden_1"]
+[node name="collision" type="CollisionShape2D" parent="floors/level_2/hidden_1"]
 position = Vector2(1745, 457.5)
 shape = SubResource("RectangleShape2D_3x3l5")
 
-[node name="color" type="ColorRect" parent="floor/hidden_1"]
+[node name="color" type="ColorRect" parent="floors/level_2/hidden_1"]
 offset_left = 1444.0
 offset_top = 437.0
 offset_right = 2047.0
 offset_bottom = 477.0
 color = Color(1, 0.333333, 1, 1)
 
-[node name="wall" type="StaticBody2D" parent="." groups=["wall"]]
+[node name="walls" type="Node2D" parent="."]
+
+[node name="debug" type="StaticBody2D" parent="walls" groups=["wall"]]
 collision_layer = 7
 collision_mask = 7
 
-[node name="start" type="CollisionShape2D" parent="wall"]
+[node name="start" type="CollisionShape2D" parent="walls/debug"]
 position = Vector2(-19, 329)
 shape = SubResource("RectangleShape2D_ys0jq")
 
-[node name="end" type="CollisionShape2D" parent="wall"]
+[node name="end" type="CollisionShape2D" parent="walls/debug"]
 position = Vector2(3395, 322)
 shape = SubResource("RectangleShape2D_ys0jq")
 
-[node name="CollisionShape2D3" type="CollisionShape2D" parent="wall"]
-position = Vector2(1171, 107.5)
-shape = SubResource("RectangleShape2D_50b11")
+[node name="padding" type="StaticBody2D" parent="walls" groups=["wall"]]
+collision_layer = 7
+collision_mask = 7
 
-[node name="CollisionShape2D4" type="CollisionShape2D" parent="wall"]
-position = Vector2(2304, 107.75)
-shape = SubResource("RectangleShape2D_50b11")
-
-[node name="CollisionShape2D7" type="CollisionShape2D" parent="wall"]
+[node name="CollisionShape2D7" type="CollisionShape2D" parent="walls/padding"]
 position = Vector2(2074, 460)
 shape = SubResource("RectangleShape2D_diijl")
 
-[node name="CollisionShape2D6" type="CollisionShape2D" parent="wall"]
+[node name="CollisionShape2D6" type="CollisionShape2D" parent="walls/padding"]
 position = Vector2(1415, 459)
 shape = SubResource("RectangleShape2D_diijl")
+
+[node name="level_borders" type="StaticBody2D" parent="walls" groups=["wall"]]
+collision_layer = 7
+collision_mask = 7
+
+[node name="CollisionShape2D3" type="CollisionShape2D" parent="walls/level_borders"]
+position = Vector2(1171, 107.5)
+shape = SubResource("RectangleShape2D_50b11")
+
+[node name="CollisionShape2D4" type="CollisionShape2D" parent="walls/level_borders"]
+position = Vector2(2304, 107.75)
+shape = SubResource("RectangleShape2D_50b11")
 
 [node name="interactions" type="Node2D" parent="."]
 
 [node name="lever" parent="interactions" node_paths=PackedStringArray("toggled_body") instance=ExtResource("2_tckwm")]
 position = Vector2(2156, 334)
-toggled_body = NodePath("../../floor/hidden_1")
+toggled_body = NodePath("../../floors/level_2/hidden_1")
 
 [node name="friends" type="Node2D" parent="."]
 
-[node name="friend" parent="friends" instance=ExtResource("2_fmk3c")]
-position = Vector2(585, 255)
+[node name="friend1" parent="friends" instance=ExtResource("2_fmk3c")]
+position = Vector2(582, 255)
 
 [node name="friend2" parent="friends" instance=ExtResource("2_fmk3c")]
 position = Vector2(2745, 227)
