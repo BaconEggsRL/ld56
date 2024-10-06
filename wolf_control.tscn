@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=3 uid="uid://y0atgpd3sa3u"]
+[gd_scene load_steps=3 format=3 uid="uid://y0atgpd3sa3u"]
 
 [ext_resource type="Script" path="res://wolf_control.gd" id="1_6ubji"]
+[ext_resource type="Script" path="res://line_edit.gd" id="2_bxd70"]
 
 [node name="wolf_control" type="Control"]
 layout_mode = 3
@@ -58,6 +59,10 @@ offset_bottom = 90.0
 grow_horizontal = 2
 grow_vertical = 2
 placeholder_text = "Enter Name:"
+max_length = 15
+script = ExtResource("2_bxd70")
 
 [connection signal="pressed" from="Button" to="." method="_on_button_pressed"]
 [connection signal="pressed" from="SubmitButton" to="." method="_on_submit_button_pressed"]
+[connection signal="focus_entered" from="LineEdit" to="." method="_on_line_edit_focus_entered"]
+[connection signal="focus_exited" from="LineEdit" to="." method="_on_line_edit_focus_exited"]

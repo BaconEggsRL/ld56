@@ -15,11 +15,11 @@ const LERP_SPEED = 4.0
 @onready var labels = get_tree().get_nodes_in_group("win_label")
 
 
-func _process(_delta):
-	if Input.is_action_just_released("restart"):
-		# print("restart")
-		Global.resetGlobals()
-		get_tree().reload_current_scene()
+#func _process(_delta):
+	#if Input.is_action_just_released("restart"):
+		## print("restart")
+		#Global.resetGlobals()
+		#get_tree().reload_current_scene()
 
 
 
