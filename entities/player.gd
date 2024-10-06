@@ -48,6 +48,11 @@ signal friend_thrown
 @export var respawn : Node2D
 
 
+# interactables
+@onready var interactables : Array[InteractableComponent] = []
+
+
+
 # when friend is first collected
 func _on_friend_collected(friend) -> void:
 	# play sound
@@ -277,12 +282,13 @@ func _ready() -> void:
 	RenderingServer.set_default_clear_color(Color(1,1,1,1))
 	self.num_friends_collected_label.text = "0 / 10"
 	control_marker.visible = self.in_control
-	_on_death()
+	_on_death(false)
 
 
 	
-func _on_death() -> void:
-	self.sound.get_node("dead").play()
+func _on_death(play_sound := true) -> void:
+	if play_sound:
+		self.sound.get_node("dead").play()
 	
 	var level = self.camera.level
 	var node_str = "level_%s" % str(level)
@@ -292,6 +298,9 @@ func _on_death() -> void:
 	
 	self.position = respawn_pt.position
 	self.velocity = Vector2(0,0)
+	
+	# sound.get_node("return").play()
+	request_return.emit()
 
 
 
@@ -345,6 +354,11 @@ func _physics_process(delta: float) -> void:
 
 	
 	if in_control:
+		
+		if Input.is_action_just_pressed("interact") and in_control:
+			for i in interactables:
+				print("interacting with: ", i)
+				i._on_interacted_with(self)
 		
 		# Handle jump.
 		if Input.is_action_just_pressed("jump"):
@@ -463,8 +477,8 @@ func get_throw_velocity() -> Array:
 # theta in radians, otherwise use deg_to_rad() before-hand
 func solve_path(v_0: Vector2, start: Vector2 = trajectory_marker.position + Vector2(0,64)) -> Line2D:
 	
-	print("v_0 = ", v_0)
-	print("start = ", start)
+	# print("v_0 = ", v_0)
+	# print("start = ", start)
 
 	var pts := PackedVector2Array([])
 	var t: float = 0.

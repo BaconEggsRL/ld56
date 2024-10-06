@@ -7,9 +7,9 @@
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_hp2rb"]
 
-[node name="friend" type="CharacterBody2D"]
+[node name="friend" type="CharacterBody2D" groups=["friend"]]
 collision_layer = 2
-collision_mask = 4
+collision_mask = 12
 script = ExtResource("1_2fenn")
 
 [node name="collect_aura" type="Polygon2D" parent="."]

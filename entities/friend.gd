@@ -6,6 +6,10 @@ var JUMP_VELOCITY = -400.0
 var FOLLOW_SPEED = 4.0
 var AURA_LERP_SPEED = 4.0
 
+
+# interactables
+@onready var interactables : Array[InteractableComponent] = []
+
 # jumping
 @onready var jumping = false
 @onready var was_last_on_floor = false
@@ -17,6 +21,7 @@ var AURA_LERP_SPEED = 4.0
 
 
 @onready var player : CharacterBody2D = get_tree().get_first_node_in_group("player")
+@onready var camera : Camera2D = get_tree().get_first_node_in_group("camera")
 
 @onready var control_marker = $control_marker
 @onready var collect_aura = $collect_aura
@@ -39,7 +44,6 @@ var control_number : int
 
 
 @export var auto_attach : bool
-
 
 signal friend_collected
 signal friend_returned
@@ -145,7 +149,7 @@ func _on_request_return():
 
 
 func _on_death() -> void:
-	print("dead")
+	# print("dead")
 	# var level = player.level
 	_on_request_return()
 	
@@ -171,9 +175,24 @@ func _ready() -> void:
 	
 
 
+
+
+
+
+##########################################################################
+
+
+
+
+
+
 func _physics_process(delta: float) -> void:
 	
 	if self.position.y > player.death_y:
+		self._on_death()
+	if self.position.x < camera.prev_x - 100:
+		self._on_death()
+	if self.position.x > camera.next_x + 100:
 		self._on_death()
 	
 	if lerp_color:
@@ -194,6 +213,14 @@ func _physics_process(delta: float) -> void:
 		else:  # not returned
 			
 			if in_control:  # check if we have control
+				
+				# interact with objects
+				if Input.is_action_just_pressed("interact") and in_control:
+					for i in interactables:
+						print("interacting with: ", i)
+						i._on_interacted_with(self)
+
+				
 				# Add the gravity.
 				if not is_on_floor():
 					velocity += get_gravity() * delta

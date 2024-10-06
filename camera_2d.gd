@@ -48,6 +48,7 @@ func _process(_delta: float) -> void:
 		prev_x += dx
 		level += 1
 		# changed_level.emit()
+		player.request_return.emit()
 		debug()
 	
 	if player_x < prev_x - player_size_offset:
@@ -56,4 +57,5 @@ func _process(_delta: float) -> void:
 		prev_x -= dx
 		level -= 1
 		# changed_level.emit()
+		player.request_return.emit()
 		debug()

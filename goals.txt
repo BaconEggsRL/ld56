@@ -108,15 +108,17 @@ Goals:
 # Create camera that moves forward / backward based on x-position?
 # prevent moving backward?
 # Create door that moves camera or changes scenes (user a fixed size window/vieport.)
-
-
 # Fix trajectory (top should align with movement
 # add death
+# jump buffer and coyote time for player
+# jump buffer and coyote time for friends
 
 
 
+# Press "E" to interact
+# Add a lever object (or floor button) that friends can interact with (flip on/off)
 
-Add a lever object (or floor button) that friends can interact with (flip on/off)
+
 
 Make lever cause a bridge to appear
 Add spikes that cause the level to reset (maybe just queue_free() until all players are dead?)
@@ -131,6 +133,10 @@ Level 2: Collect first friend
 
 
 =================================================================
+
+Notes:
+Set level to debug in camera node export
+Change which friends are auto-attached 
 
 Stretch goals:
 Allow the player to employ multiple tiny friends at the same time, and chain them together.

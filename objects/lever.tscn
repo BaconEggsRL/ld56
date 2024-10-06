@@ -1,0 +1,46 @@
+[gd_scene load_steps=4 format=3 uid="uid://cn2dgvuk02dhd"]
+
+[ext_resource type="Script" path="res://objects/lever.gd" id="1_6vk4p"]
+[ext_resource type="PackedScene" uid="uid://obsysd4pxjay" path="res://components/interactable_component.tscn" id="1_p2wo4"]
+[ext_resource type="AudioStream" uid="uid://djxse0bjyrjh7" path="res://sounds/interact.wav" id="3_i751i"]
+
+[node name="lever" type="Node2D" node_paths=PackedStringArray("interactable")]
+script = ExtResource("1_6vk4p")
+interactable = NodePath("InteractableComponent")
+
+[node name="InteractableComponent" parent="." instance=ExtResource("1_p2wo4")]
+
+[node name="lever_body" type="ColorRect" parent="."]
+custom_minimum_size = Vector2(100, 100)
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(1, 0.333333, 1, 1)
+
+[node name="lever_arm" type="ColorRect" parent="."]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -5.8264
+offset_top = -98.2143
+offset_right = 4.1736
+offset_bottom = 1.78571
+grow_horizontal = 2
+grow_vertical = 2
+rotation = 0.523599
+pivot_offset = Vector2(5.85306, 98.0845)
+color = Color(1, 0.333333, 1, 1)
+
+[node name="move_lever" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("3_i751i")
+volume_db = -10.0
