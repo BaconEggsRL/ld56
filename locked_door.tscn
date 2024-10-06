@@ -1,0 +1,49 @@
+[gd_scene load_steps=5 format=3 uid="uid://dhlhacj25rirg"]
+
+[ext_resource type="Script" path="res://locked_door.gd" id="1_hgmf5"]
+[ext_resource type="Script" path="res://interactable_area.gd" id="2_3k4qm"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_q1mja"]
+size = Vector2(54, 595)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_311lq"]
+size = Vector2(155, 604)
+
+[node name="locked_door" type="StaticBody2D" node_paths=PackedStringArray("interaction_area") groups=["wall"]]
+collision_layer = 7
+collision_mask = 7
+script = ExtResource("1_hgmf5")
+interaction_area = NodePath("InteractableArea")
+
+[node name="collision" type="CollisionShape2D" parent="."]
+position = Vector2(0, 0.5)
+shape = SubResource("RectangleShape2D_q1mja")
+
+[node name="color" type="ColorRect" parent="."]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -24.0
+offset_top = -293.0
+offset_right = 28.0
+offset_bottom = 298.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(1, 0.333333, 1, 1)
+
+[node name="InteractableArea" type="Area2D" parent="."]
+collision_layer = 15
+collision_mask = 15
+script = ExtResource("2_3k4qm")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="InteractableArea"]
+position = Vector2(2.5, 0)
+shape = SubResource("RectangleShape2D_311lq")
+
+[node name="label_color_timer" type="Timer" parent="."]
+one_shot = true
+
+[connection signal="interaction" from="InteractableArea" to="." method="_on_interactable_area_interaction"]
+[connection signal="timeout" from="label_color_timer" to="." method="_on_label_color_timer_timeout"]

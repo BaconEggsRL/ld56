@@ -1,10 +1,19 @@
-[gd_scene load_steps=3 format=3 uid="uid://bdtr8pr7a6c40"]
+[gd_scene load_steps=5 format=3 uid="uid://bdtr8pr7a6c40"]
 
 [ext_resource type="Script" path="res://global.gd" id="1_api3x"]
 [ext_resource type="AudioStream" uid="uid://ce0oghwrmm1wq" path="res://sounds/key.wav" id="2_1g6gb"]
+[ext_resource type="AudioStream" uid="uid://epmu4whnsogg" path="res://sounds/invalid.wav" id="2_usavt"]
+[ext_resource type="AudioStream" uid="uid://ca4444j4nt5x4" path="res://sounds/door.wav" id="3_lkn81"]
 
 [node name="global" type="Node"]
 script = ExtResource("1_api3x")
 
+[node name="invalid" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("2_usavt")
+volume_db = -5.0
+
 [node name="key" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("2_1g6gb")
+
+[node name="door" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("3_lkn81")

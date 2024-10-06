@@ -16,7 +16,7 @@ var frequency : float = 1.5
 
 
 # interactables
-@onready var interactables : Array[InteractableComponent] = []
+@onready var interactables : Array[Area2D] = []
 
 # jumping
 @onready var jumping = false

@@ -53,7 +53,7 @@ signal game_over
 
 
 # interactables
-@onready var interactables : Array[InteractableComponent] = []
+@onready var interactables : Array[Area2D] = []
 
 @onready var handle_input := true
 
