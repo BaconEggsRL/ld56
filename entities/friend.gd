@@ -200,9 +200,9 @@ func _physics_process(delta: float) -> void:
 	
 	if self.position.y > player.death_y:
 		self._on_death()
-	if self.position.x < camera.prev_x - 100:
+	elif self.position.x < camera.prev_x - 100:
 		self._on_death()
-	if self.position.x > camera.next_x + 100:
+	elif self.position.x > camera.next_x + 100:
 		self._on_death()
 	
 	if lerp_color:

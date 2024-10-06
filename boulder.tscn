@@ -1,0 +1,27 @@
+[gd_scene load_steps=4 format=3 uid="uid://dcjlw1flce3fj"]
+
+[ext_resource type="Script" path="res://tools/regular_polygon_2d.gd" id="1_nkoqv"]
+[ext_resource type="Script" path="res://boulder.gd" id="1_r0ar0"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_xuuxq"]
+size = Vector2(72, 72)
+
+[node name="boulder" type="RigidBody2D" groups=["boulder"]]
+collision_layer = 15
+collision_mask = 15
+mass = 0.1
+can_sleep = false
+freeze_mode = 1
+script = ExtResource("1_r0ar0")
+
+[node name="RegularPolygon2D" type="Polygon2D" parent="."]
+rotation = 0.785398
+scale = Vector2(1, 1)
+color = Color(0.109804, 1, 0.0901961, 1)
+polygon = PackedVector2Array(50, 0, 3.06152e-15, 50, -50, 6.12303e-15, -9.18455e-15, -50)
+script = ExtResource("1_nkoqv")
+sides = 4
+radius = 50.0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_xuuxq")

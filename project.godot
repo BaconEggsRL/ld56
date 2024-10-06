@@ -27,6 +27,7 @@ wall=""
 friend=""
 camera=""
 win_label=""
+boulder=""
 
 [input]
 

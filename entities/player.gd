@@ -20,14 +20,22 @@ signal friend_thrown
 
 signal game_over
 
+# pushing
+@export var pushForce = 500
+
+
 # jumping
 @onready var jumping = false
 
 @onready var was_last_on_floor = false
 @onready var coyote = false
 @onready var jump_buffer = false
+
 @onready var coyote_timer = $CoyoteTimer
 @onready var jump_buffer_timer = $JumpBuffer
+@onready var jump_height_timer = $JumpHeight
+
+@onready var can_jump_higher = false
 
 @onready var control_number := -1
 
@@ -400,17 +408,25 @@ func _physics_process(delta: float) -> void:
 					jump_buffer = false
 							
 							
-		if Input.is_action_just_pressed("jump") and handle_input:
-			if (is_on_floor() or coyote) and jumping == false:  # jump_available
-				if is_on_floor():
-					jump()
-					print("jump_from_action_just_pressed (REGULAR)")
+		
+		
+		if Input.is_action_pressed("jump") and handle_input:
+			if Input.is_action_just_pressed("jump") and handle_input:
+				if (is_on_floor() or coyote) and jumping == false:  # jump_available
+					if is_on_floor():
+						jump()
+						print("jump_from_action_just_pressed (REGULAR)")
+					else:
+						jump()
+						print("jump_from_action_just_pressed (COYOTE)")
 				else:
-					jump()
-					print("jump_from_action_just_pressed (COYOTE)")
-			else:
-				jump_buffer_time()
-
+					jump_buffer_time()
+				
+			#else:
+				#if (is_on_floor() or coyote) and jumping == true:
+					#if can_jump_higher:
+						#velocity.y = JUMP_VELOCITY
+			
 		# Get the input direction and handle the movement/deceleration.
 		# As good practice, you should replace UI actions with custom gameplay actions.
 		var direction
@@ -439,7 +455,12 @@ func _physics_process(delta: float) -> void:
 		was_last_on_floor = is_on_floor()
 		
 	# move and update on floor
-	move_and_slide()
+	if self.move_and_slide(): # true if collided
+		for i in self.get_slide_collision_count():
+			var col = self.get_slide_collision(i)
+			if col.get_collider().is_in_group("boulder"):
+				col.get_collider().apply_force(col.get_normal() * -pushForce)
+	# move_and_slide()
 	
 	# check if different
 	if was_last_on_floor and not is_on_floor():
@@ -449,14 +470,23 @@ func _physics_process(delta: float) -> void:
 
 
 
+
+	
+	
 func jump() -> void:
 	jumping = true
+	can_jump_higher = true
+	jump_height_timer.start()
 	velocity.y = JUMP_VELOCITY
+	
 	var jump_sound = sound.get_node("jump")
 	jump_sound.pitch_scale = 0.7
 	jump_sound.play()
 	# pitch_scale = 0.77, volume_db = -10.895
 
+func _on_jump_height_timeout() -> void:
+	can_jump_higher = false
+	
 func coyote_time() -> void:
 	# print("coyote")
 	# Delay for a set amount of time to still jump in air

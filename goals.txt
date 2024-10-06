@@ -119,15 +119,14 @@ Add sounds:
 Goals:
 
 Need level ideas, additional collectables / mechanics?
--Keys (collect to unlock doors--add count to HUD? (some backtracking, maybe?)
--Bubbles (collectables such as keys can be stuck inside. Throw a friend to pop a bubble.)
--Target/Push button (can be triggered on throw)
+# -Keys (collect to unlock doors--add count to HUD? (some backtracking, maybe?)
+# -Bubbles (collectables such as keys can be stuck inside. Throw a friend to pop a bubble.)
+# -Target/Push button (can be triggered on throw)
 
 
 Create 5 unique levels
 
 
-1,0,0,1
 =================================================================
 
 

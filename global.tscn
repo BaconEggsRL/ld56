@@ -8,12 +8,17 @@
 [node name="global" type="Node"]
 script = ExtResource("1_api3x")
 
-[node name="invalid" type="AudioStreamPlayer2D" parent="."]
+[node name="invalid" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("2_usavt")
+volume_db = -10.0
+
+[node name="key" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("2_1g6gb")
 volume_db = -5.0
 
-[node name="key" type="AudioStreamPlayer2D" parent="."]
-stream = ExtResource("2_1g6gb")
-
-[node name="door" type="AudioStreamPlayer2D" parent="."]
+[node name="door" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("3_lkn81")
+volume_db = -10.0
+
+[node name="explode" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("2_usavt")

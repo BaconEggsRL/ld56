@@ -13,6 +13,7 @@
 size = Vector2(40, 79)
 
 [node name="player" type="CharacterBody2D" groups=["player"]]
+safe_margin = 0.2
 script = ExtResource("1_2rdnr")
 
 [node name="Line2D" type="Line2D" parent="."]
@@ -73,6 +74,11 @@ one_shot = true
 wait_time = 0.2
 one_shot = true
 
+[node name="JumpHeight" type="Timer" parent="."]
+wait_time = 0.5
+one_shot = true
+
 [connection signal="changed_control" from="." to="." method="_on_changed_control"]
 [connection signal="timeout" from="CoyoteTimer" to="." method="_on_coyote_timer_timeout"]
 [connection signal="timeout" from="JumpBuffer" to="." method="_on_jump_buffer_timeout"]
+[connection signal="timeout" from="JumpHeight" to="." method="_on_jump_height_timeout"]

@@ -1,8 +1,10 @@
-[gd_scene load_steps=21 format=3 uid="uid://6b2hd2hrhx83"]
+[gd_scene load_steps=23 format=3 uid="uid://6b2hd2hrhx83"]
 
 [ext_resource type="PackedScene" uid="uid://cyfn0qt3k4q2i" path="res://entities/player.tscn" id="1_fln6j"]
+[ext_resource type="Script" path="res://interactions.gd" id="1_vxy2d"]
 [ext_resource type="PackedScene" uid="uid://cgf7ujs3uu2pv" path="res://entities/friend.tscn" id="2_fmk3c"]
 [ext_resource type="PackedScene" uid="uid://cn2dgvuk02dhd" path="res://objects/lever.tscn" id="2_tckwm"]
+[ext_resource type="PackedScene" uid="uid://dcjlw1flce3fj" path="res://boulder.tscn" id="3_40tth"]
 [ext_resource type="Script" path="res://camera_2d.gd" id="3_b10ns"]
 [ext_resource type="PackedScene" uid="uid://dhlhacj25rirg" path="res://locked_door.tscn" id="3_k5tp4"]
 [ext_resource type="Script" path="res://gameover.gd" id="5_0ipdp"]
@@ -13,13 +15,13 @@
 [ext_resource type="PackedScene" uid="uid://oai41udmii44" path="res://objects/key.tscn" id="9_v0rdg"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_jsomm"]
-size = Vector2(1456, 118)
+size = Vector2(1414, 118)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_qkm1s"]
 size = Vector2(574, 36)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ojfou"]
-size = Vector2(1337, 118)
+size = Vector2(1791.5, 118)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ys0jq"]
 size = Vector2(38, 674)
@@ -31,7 +33,7 @@ size = Vector2(38, 123)
 size = Vector2(14, 34.75)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_50b11"]
-size = Vector2(38, 214.5)
+size = Vector2(38, 227.25)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_3x3l5"]
 size = Vector2(604, 43)
@@ -52,66 +54,66 @@ offset_bottom = 40.0
 [node name="exits" type="Node2D" parent="Control"]
 
 [node name="Polygon2D" type="Polygon2D" parent="Control/exits"]
-position = Vector2(1152, 318)
+position = Vector2(1152, 310)
 color = Color(0.156863, 1, 1, 1)
 polygon = PackedVector2Array(-40, -88, 40, -88, 40, 88, -40, 88)
 
 [node name="Polygon2D2" type="Polygon2D" parent="Control/exits"]
-position = Vector2(2304, 318)
+position = Vector2(2304, 310)
 color = Color(0.156863, 1, 1, 1)
 polygon = PackedVector2Array(-40, -88, 40, -88, 40, 88, -40, 88)
 
 [node name="Polygon2D3" type="Polygon2D" parent="Control/exits"]
-position = Vector2(3456, 318)
+position = Vector2(3456, 310)
 color = Color(0.156863, 1, 1, 1)
 polygon = PackedVector2Array(-40, -88, 40, -88, 40, 88, -40, 88)
 
 [node name="floors" type="Node2D" parent="."]
 
-[node name="level_1" type="StaticBody2D" parent="floors" groups=["floor"]]
+[node name="level_0" type="StaticBody2D" parent="floors" groups=["floor"]]
 collision_layer = 7
 collision_mask = 7
 
-[node name="color_1" type="ColorRect" parent="floors/level_1"]
+[node name="color_0" type="ColorRect" parent="floors/level_0"]
 offset_left = -27.0
 offset_top = 398.0
-offset_right = 1429.0
+offset_right = 1383.0
 offset_bottom = 518.0
 color = Color(0, 0, 0, 1)
 
-[node name="level_1" type="CollisionShape2D" parent="floors/level_1"]
-position = Vector2(703, 455)
+[node name="level_0" type="CollisionShape2D" parent="floors/level_0"]
+position = Vector2(681, 456)
 shape = SubResource("RectangleShape2D_jsomm")
 
-[node name="test" type="StaticBody2D" parent="floors/level_1" groups=["floor"]]
+[node name="raised_platform" type="StaticBody2D" parent="floors/level_0" groups=["floor"]]
 position = Vector2(-124, 5)
 collision_layer = 7
 collision_mask = 7
 
-[node name="test_color" type="ColorRect" parent="floors/level_1/test"]
+[node name="test_color" type="ColorRect" parent="floors/level_0/raised_platform"]
 offset_left = 422.0
 offset_top = 312.0
 offset_right = 995.0
 offset_bottom = 348.0
 color = Color(0, 0, 0, 1)
 
-[node name="test" type="CollisionShape2D" parent="floors/level_1/test"]
+[node name="test" type="CollisionShape2D" parent="floors/level_0/raised_platform"]
 position = Vector2(709, 329)
 shape = SubResource("RectangleShape2D_qkm1s")
 
-[node name="level_2" type="StaticBody2D" parent="floors" groups=["floor"]]
+[node name="level_1" type="StaticBody2D" parent="floors" groups=["floor"]]
 collision_layer = 7
 collision_mask = 7
 
-[node name="color_2" type="ColorRect" parent="floors/level_2"]
-offset_left = 2059.0
+[node name="color_1" type="ColorRect" parent="floors/level_1"]
+offset_left = 2018.0
 offset_top = 398.0
-offset_right = 3406.0
+offset_right = 3809.0
 offset_bottom = 518.0
 color = Color(0, 0, 0, 1)
 
-[node name="level_2" type="CollisionShape2D" parent="floors/level_2"]
-position = Vector2(2727, 455)
+[node name="level_1" type="CollisionShape2D" parent="floors/level_1"]
+position = Vector2(2913.25, 456)
 shape = SubResource("RectangleShape2D_ojfou")
 
 [node name="walls" type="Node2D" parent="."]
@@ -125,7 +127,7 @@ position = Vector2(-19, 329)
 shape = SubResource("RectangleShape2D_ys0jq")
 
 [node name="end" type="CollisionShape2D" parent="walls/debug"]
-position = Vector2(3395, 322)
+position = Vector2(3780, 274)
 shape = SubResource("RectangleShape2D_ys0jq")
 
 [node name="padding" type="StaticBody2D" parent="walls" groups=["wall"]]
@@ -133,11 +135,11 @@ collision_layer = 7
 collision_mask = 7
 
 [node name="CollisionShape2D7" type="CollisionShape2D" parent="walls/padding"]
-position = Vector2(2074, 460)
+position = Vector2(2033, 461.25)
 shape = SubResource("RectangleShape2D_diijl")
 
 [node name="CollisionShape2D6" type="CollisionShape2D" parent="walls/padding"]
-position = Vector2(1415, 459)
+position = Vector2(1374, 460.25)
 shape = SubResource("RectangleShape2D_diijl")
 
 [node name="CollisionShape2D8" type="CollisionShape2D" parent="walls/padding"]
@@ -153,21 +155,29 @@ collision_layer = 7
 collision_mask = 7
 
 [node name="CollisionShape2D3" type="CollisionShape2D" parent="walls/level_borders"]
-position = Vector2(1154, 106)
+position = Vector2(1152, 104)
 shape = SubResource("RectangleShape2D_50b11")
 
 [node name="CollisionShape2D4" type="CollisionShape2D" parent="walls/level_borders"]
-position = Vector2(2304, 107.75)
+position = Vector2(2304, 104)
+shape = SubResource("RectangleShape2D_50b11")
+
+[node name="CollisionShape2D5" type="CollisionShape2D" parent="walls/level_borders"]
+position = Vector2(3456, 104)
 shape = SubResource("RectangleShape2D_50b11")
 
 [node name="interactions" type="Node2D" parent="."]
+script = ExtResource("1_vxy2d")
 
 [node name="lever" parent="interactions" node_paths=PackedStringArray("toggled_body") instance=ExtResource("2_tckwm")]
-position = Vector2(2156, 334)
+position = Vector2(2115, 335.25)
 toggled_body = NodePath("../dynamic/hidden_1")
 
 [node name="key" parent="interactions" instance=ExtResource("9_v0rdg")]
 position = Vector2(585, 376)
+
+[node name="boulder" parent="interactions" instance=ExtResource("3_40tth")]
+position = Vector2(2756, 333)
 
 [node name="dynamic" type="Node2D" parent="interactions"]
 
@@ -176,29 +186,30 @@ collision_layer = 7
 collision_mask = 7
 
 [node name="collision" type="CollisionShape2D" parent="interactions/dynamic/hidden_1"]
-position = Vector2(1745, 457.5)
+position = Vector2(1704, 458.75)
 shape = SubResource("RectangleShape2D_3x3l5")
 
 [node name="color" type="ColorRect" parent="interactions/dynamic/hidden_1"]
-offset_left = 1444.0
-offset_top = 437.0
-offset_right = 2047.0
-offset_bottom = 477.0
+offset_left = 1403.0
+offset_top = 438.25
+offset_right = 2006.0
+offset_bottom = 478.25
 color = Color(1, 0.333333, 1, 1)
 
 [node name="locked_door" parent="interactions/dynamic" instance=ExtResource("3_k5tp4")]
-position = Vector2(1050, 282)
+position = Vector2(1070, 252)
 
 [node name="friends" type="Node2D" parent="."]
 
 [node name="friend1" parent="friends" instance=ExtResource("2_fmk3c")]
 position = Vector2(582, 255)
+auto_attach = true
 
 [node name="friend2" parent="friends" instance=ExtResource("2_fmk3c")]
-position = Vector2(2637, 248)
+position = Vector2(2897, 48)
 
 [node name="friend3" parent="friends" instance=ExtResource("2_fmk3c")]
-position = Vector2(3037, 248)
+position = Vector2(4032, 279)
 
 [node name="respawn" type="Node2D" parent="."]
 
@@ -206,15 +217,16 @@ position = Vector2(3037, 248)
 position = Vector2(152, 232)
 
 [node name="level_1" type="Marker2D" parent="respawn"]
-position = Vector2(1250, 343)
+position = Vector2(1321, 335)
 
 [node name="level_2" type="Marker2D" parent="respawn"]
-position = Vector2(2433, 325)
+position = Vector2(2392, 326.25)
 
 [node name="Camera2D" type="Camera2D" parent="." node_paths=PackedStringArray("player") groups=["camera"]]
 anchor_mode = 0
 script = ExtResource("3_b10ns")
 player = NodePath("../player")
+level = 2
 
 [node name="GridContainer" type="GridContainer" parent="Camera2D"]
 offset_left = 5.19
@@ -305,15 +317,28 @@ size_flags_horizontal = 4
 size_flags_vertical = 4
 tooltip_text = "Welcome to Tiny Friends!
 - Use WASD to move around, Spacebar to jump
+- Press E to interact with pink objects
+
 - Hold SHIFT + LEFT CLICK to throw your tiny friends
 - Thrown friends can be controlled. 
 - Press CONTROL to switch movement.
 - Press TAB to cycle through multiple.
-- Recall your friends at any time with RIGHT CLICK.
-- Press E to interact with pink objects
-
-"
+- Recall your friends at any time with RIGHT CLICK."
 mouse_filter = 1
+
+[node name="instruction_label3" type="Label" parent="text_control/instructions"]
+visible = false
+layout_mode = 2
+offset_left = -11.0
+offset_top = 543.0
+offset_right = 329.0
+offset_bottom = 618.0
+mouse_filter = 1
+text = "Hold SHIFT+CLICK to throw your tiny friends
+Right click to recall them
+Press E to interact with pink objects"
+label_settings = ExtResource("8_lf3qf")
+horizontal_alignment = 1
 
 [node name="VBoxContainer" type="VBoxContainer" parent="text_control/instructions"]
 layout_mode = 1
@@ -339,11 +364,12 @@ horizontal_alignment = 1
 [node name="instruction_label2" type="Label" parent="text_control/instructions/VBoxContainer"]
 layout_mode = 2
 mouse_filter = 1
-text = "(mouse over this text for instructions)"
+text = "(mouse over for instructions)"
 label_settings = ExtResource("8_lf3qf")
 horizontal_alignment = 1
 
 [node name="interact" type="Label" parent="text_control/instructions"]
+visible = false
 layout_mode = 0
 offset_left = 1178.0
 offset_top = 59.0
