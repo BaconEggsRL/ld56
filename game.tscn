@@ -424,15 +424,12 @@ position = Vector2(582, 255)
 
 [node name="friend2" parent="friends" instance=ExtResource("2_fmk3c")]
 position = Vector2(2897, 48)
-auto_attach = true
 
 [node name="friend3" parent="friends" instance=ExtResource("2_fmk3c")]
 position = Vector2(4032, 279)
-auto_attach = true
 
 [node name="friend4" parent="friends" instance=ExtResource("2_fmk3c")]
 position = Vector2(-580, 353)
-auto_attach = true
 
 [node name="respawn" type="Node2D" parent="."]
 
