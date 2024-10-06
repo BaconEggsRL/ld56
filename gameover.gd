@@ -24,6 +24,8 @@ func _process(_delta):
 
 
 func _ready() -> void:
+	Global.gameover_layer = self
+	
 	self.hide()
 	# set hidden colors
 	fade_bg.color = bg_hidden_color

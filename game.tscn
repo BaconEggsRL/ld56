@@ -1,4 +1,4 @@
-[gd_scene load_steps=31 format=3 uid="uid://6b2hd2hrhx83"]
+[gd_scene load_steps=32 format=3 uid="uid://6b2hd2hrhx83"]
 
 [ext_resource type="PackedScene" uid="uid://cyfn0qt3k4q2i" path="res://entities/player.tscn" id="1_fln6j"]
 [ext_resource type="Script" path="res://interactions.gd" id="1_vxy2d"]
@@ -13,6 +13,7 @@
 [ext_resource type="LabelSettings" uid="uid://c0tsoxqpuedc1" path="res://objects/body.tres" id="7_4prw0"]
 [ext_resource type="LabelSettings" uid="uid://bl1kcv46rr2ys" path="res://objects/tiny.tres" id="8_lf3qf"]
 [ext_resource type="PackedScene" uid="uid://oai41udmii44" path="res://objects/key.tscn" id="9_v0rdg"]
+[ext_resource type="Script" path="res://time_label.gd" id="9_yfjwo"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_7fjfh"]
 size = Vector2(2102, 118)
@@ -423,12 +424,15 @@ position = Vector2(582, 255)
 
 [node name="friend2" parent="friends" instance=ExtResource("2_fmk3c")]
 position = Vector2(2897, 48)
+auto_attach = true
 
 [node name="friend3" parent="friends" instance=ExtResource("2_fmk3c")]
 position = Vector2(4032, 279)
+auto_attach = true
 
 [node name="friend4" parent="friends" instance=ExtResource("2_fmk3c")]
 position = Vector2(-580, 353)
+auto_attach = true
 
 [node name="respawn" type="Node2D" parent="."]
 
@@ -473,8 +477,14 @@ horizontal_alignment = 1
 layout_mode = 2
 text = "0 keys"
 label_settings = SubResource("LabelSettings_v2lyb")
-horizontal_alignment = 1
 script = ExtResource("6_kwlv2")
+
+[node name="time_label" type="Label" parent="Camera2D/GridContainer"]
+visible = false
+layout_mode = 2
+text = "time"
+label_settings = SubResource("LabelSettings_v2lyb")
+script = ExtResource("9_yfjwo")
 
 [node name="gameover" type="CanvasLayer" parent="Camera2D"]
 process_mode = 3
@@ -498,17 +508,36 @@ offset_right = 215.0
 offset_bottom = -81.0
 grow_horizontal = 2
 grow_vertical = 2
-text = "YOU WIN"
+text = "YOU WON :)"
 label_settings = ExtResource("6_3hnhf")
 
 [node name="msg_label" type="Label" parent="Camera2D/gameover" groups=["win_label"]]
-offset_left = 450.0
-offset_top = 273.0
-offset_right = 716.0
-offset_bottom = 414.0
+offset_left = 339.0
+offset_top = 271.0
+offset_right = 831.0
+offset_bottom = 412.0
 text = "Congrats!
 
-Press R to restart"
+You beat the game in:"
+label_settings = ExtResource("7_4prw0")
+horizontal_alignment = 1
+
+[node name="time_label" type="Label" parent="Camera2D/gameover" groups=["win_label"]]
+offset_left = 249.0
+offset_top = 413.0
+offset_right = 919.0
+offset_bottom = 458.0
+text = "0 seconds"
+label_settings = ExtResource("7_4prw0")
+horizontal_alignment = 1
+script = ExtResource("9_yfjwo")
+
+[node name="control_tip" type="Label" parent="Camera2D/gameover" groups=["win_label"]]
+offset_left = 339.0
+offset_top = 510.0
+offset_right = 831.0
+offset_bottom = 562.0
+text = "(Press R to restart)"
 label_settings = ExtResource("7_4prw0")
 horizontal_alignment = 1
 

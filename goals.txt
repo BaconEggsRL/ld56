@@ -118,13 +118,11 @@ Add sounds:
 
 Goals:
 
-Need level ideas, additional collectables / mechanics?
+# Need level ideas, additional collectables / mechanics?
 # -Keys (collect to unlock doors--add count to HUD? (some backtracking, maybe?)
 # -Bubbles (collectables such as keys can be stuck inside. Throw a friend to pop a bubble.)
 # -Target/Push button (can be triggered on throw)
-
-
-Create 5 unique levels
+# Create 5 unique levels
 
 
 =================================================================
@@ -132,12 +130,12 @@ Create 5 unique levels
 
 Stretch goals:
 
--Rocks/Boulders (can push--using players or friends? -- boulders can hide tiny places for friends to enter)
+# -Rocks/Boulders (can push--using players or friends? -- boulders can hide tiny places for friends to enter)
+# -Add spikes that cause the level to reset (maybe just queue_free() until all players are dead?)
+# Have some levels backtrack on each other (interconnected world.)
+
+
 Create 10 unique levels.
-
--Add spikes that cause the level to reset (maybe just queue_free() until all players are dead?)
-
-Have some levels backtrack on each other (interconnected world.)
 
 CHAINING -- Allow the player to employ multiple tiny friends at the same time, and chain them together.
 (If you have more than one come into contact, they automatically chain?)
