@@ -14,7 +14,6 @@ mass = 0.1
 script = ExtResource("1_r0ar0")
 
 [node name="RegularPolygon2D" type="Polygon2D" parent="."]
-scale = Vector2(1, 1)
 color = Color(0.109804, 1, 0.0901961, 1)
 polygon = PackedVector2Array(25, 0, 12.5, 21.6506, -12.5, 21.6506, -25, 3.06152e-15, -12.5, -21.6506, 12.5, -21.6506)
 script = ExtResource("1_nkoqv")

@@ -18,6 +18,11 @@ config/icon="res://icon.svg"
 [autoload]
 
 Global="*res://global.tscn"
+SilentWolf="*res://addons/silent_wolf/SilentWolf.gd"
+
+[editor_plugins]
+
+enabled=PackedStringArray("res://addons/silent_wolf/plugin.cfg")
 
 [global_group]
 

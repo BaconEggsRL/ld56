@@ -148,3 +148,12 @@ CHAINING -- Allow the player to employ multiple tiny friends at the same time, a
 Notes:
 Set level to debug in camera node export
 Change which friends are auto-attached 
+
+
+api keys
+lMO7cGJjrjan6AqwY0F6c90fX7XMJALK4Kz4ZUkk
+
+Game ID:tinyfriends
+Game name:TinyFriends
+
+

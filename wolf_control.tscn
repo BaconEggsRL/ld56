@@ -1,0 +1,63 @@
+[gd_scene load_steps=2 format=3 uid="uid://y0atgpd3sa3u"]
+
+[ext_resource type="Script" path="res://wolf_control.gd" id="1_6ubji"]
+
+[node name="wolf_control" type="Control"]
+layout_mode = 3
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_6ubji")
+
+[node name="Button" type="Button" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -46.0
+offset_top = -84.0
+offset_right = 48.0
+offset_bottom = -48.0
+grow_horizontal = 2
+grow_vertical = 2
+disabled = true
+
+[node name="SubmitButton" type="Button" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 235.0
+offset_top = 42.0
+offset_right = 349.0
+offset_bottom = 89.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Submit Score"
+
+[node name="LineEdit" type="LineEdit" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -222.0
+offset_top = 42.0
+offset_right = 223.0
+offset_bottom = 90.0
+grow_horizontal = 2
+grow_vertical = 2
+placeholder_text = "Enter Name:"
+
+[connection signal="pressed" from="Button" to="." method="_on_button_pressed"]
+[connection signal="pressed" from="SubmitButton" to="." method="_on_submit_button_pressed"]

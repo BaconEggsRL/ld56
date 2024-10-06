@@ -301,6 +301,7 @@ func throw() -> void:
 
 
 func _ready() -> void:
+	Global.resetGlobals()
 	RenderingServer.set_default_clear_color(Color(1,1,1,1))
 	
 	# Define a format string with placeholder '%s'
