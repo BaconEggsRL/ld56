@@ -150,10 +150,12 @@ Set level to debug in camera node export
 Change which friends are auto-attached 
 
 
-api keys
-lMO7cGJjrjan6AqwY0F6c90fX7XMJALK4Kz4ZUkk
 
-Game ID:tinyfriends
-Game name:TinyFriends
+=================================================================
 
 
+Restart is just the current level (in-game)
+Fix viewport sizing and code for camera
+
+
+link into different shapes/colors

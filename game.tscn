@@ -76,6 +76,7 @@ layout_mode = 3
 anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
+metadata/_edit_use_anchors_ = true
 
 [node name="exits" type="Node2D" parent="Control"]
 
@@ -486,6 +487,7 @@ script = ExtResource("9_yfjwo")
 
 [node name="gameover" type="CanvasLayer" parent="Camera2D"]
 process_mode = 3
+visible = false
 script = ExtResource("5_0ipdp")
 
 [node name="bg" type="ColorRect" parent="Camera2D/gameover"]
@@ -634,5 +636,7 @@ offset_right = 1454.0
 offset_bottom = 82.0
 text = "Press E to interact with pink objects"
 label_settings = ExtResource("8_lf3qf")
+
+[node name="TileMapLayer" type="TileMapLayer" parent="."]
 
 [connection signal="game_over" from="player" to="Camera2D/gameover" method="_on_player_game_over"]
