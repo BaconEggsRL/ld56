@@ -1,0 +1,170 @@
+Resolution:
+
+
+https://www.youtube.com/watch?v=8Mc8A3rXn8w
+
+16 by 9 common for most games
+low res good for quick game jams, pixel art games
+
+Godot:
+Display, Window
+
+pick either portrait or landscape mode?
+godot defaults to landscape
+
+You design the game at a reference Resolution
+Common resolutions (steam hardware survey)
+1920x1080
+
+UI: Use canvas layer node
+canvas layer node independent of camera position
+can also change z index of elements (draw order)
+
+Theme Overrides -> Constants
+
+How to align UI elements?
+Containers: Parent asks child, "how big do you want to be?" and sizes itself appropriately
+Containers (grid container)
+--only work on green UI elements (derived from Control), not sprites or anything else.
+(can use TextureRect, with fit width expand mode, and stretch mode keep aspect centered )
+
+replace Panel, with PanelContainer, make gridcontainer child of panelcontainer
+extra space: use margin container
+canvas layer, panel container, margin container, grid container
+
+
+Themes: create new resource
+eyedropper, select element to change style
+can set by individual elements, or root UI (green) element
+all labels / ui elements will inherit theme from root node (unless they have their own theme)
+3rd way: project settings, advanced, GUI>Theme>Custom, save and restart editor
+theme "+" button adds a new type
+scene > reload saved scene (UI elements don't check if theme has changed.)
+
+Change node size: Control Layout, Container Sizing
+Expand: request all the space the parent container can give (Give me ALL the space!)
+if multiple expand: split among the children
+stretch ratio: for expand, sums up the stretch ratios (1+1 = 2)
+stretch ratio / sum (1/2 + 1/2 = 1)
+1+3=4 (1/4 and 3/4)
+
+expand determines the size requested, while horiz/vert fill mode determines how it uses that space
+center container but has no expand option
+can also use spacer control nodes
+
+control settings also above viewport instead of clicking in sidebar
+
+
+...96
+
+
+Changing window size: use anchors
+position is relative to anchor position
+
+smaller resolution: shrink/scale
+project settings -> window -> stretch mode
+canvas_items (use this)
+viewport
+
+aspect -- keep, keep_width, keep_height, expand (makes width and height bigger)
+
+
+
+
+
+
+
+
+================================================================
+
+
+https://www.youtube.com/watch?v=blPqie3Z_F0
+
+
+Godot:
+CanvasLayer
+HBoxContainer / Control node anchor bottom left, scale around size of object
+
+To scale size of joystick -- Display > Window
+Stretch viewport, aspect expand
+
+Change max resolution -- same resolution when maximized
+to fix, change viewport width and height to 1080p (1920 by 1080)
+To allow player to set resolution in game:
+get_viewport().size = Vector2(960, 720)
+
+default resolution of monitor:
+DisplayServer.screen.get_size()
+
+
+
+====================================================================
+
+
+pong test:
+
+current resolution:
+960 by 720
+resizable is off
+stretch mode disabled, aspect keep
+export: project settings
+
+
+new mode:
+stretch mode: canvas items (more smooth / blurry, less exact)
+aspect: keep width
+
+export in adaptive mode for html
+
+add pause button somewhere in case esc doesn't work?
+or change from ESC to Backspace or something
+
+====================================================================
+
+StyleBoxFlat inherits from StyleBox > Resource > RefCounted > Object
+"A customizable StyleBox that doesn't use a texture."
+
+StyleBoxTexture inherits from StyleBox > Resource.... (A texture-based nine-patch StyleBox.)
+
+PlaceholderTexture2D inherits from Texture2D > Texture > Resource > RefCounted > Object
+"Placeholder class for a 2-dimensional texture."
+"Texture for 2D and 3D."
+
+Both inherit from Resource (Texture vs StyleBox)
+
+
+ Panel + StyleBoxTexture
+ 
+ 
+ ====================================================================
+ 
+ flappy bird test:
+ 
+ original:
+ 1220 x 720
+ Resizable off
+ Strecth disabled, keep aspect
+ Export: Canvas resize policy, project
+ 
+ 
+ new:
+ resizable on
+ canvas items, keep
+ --ground is not repeating quick enough, pipes seem to spawn too low (fixed by hardcoding game resolution)
+ 
+ ====================================================================
+ 
+ 
+Define target platforms and resolutions at the start
+Mobile? Web Mobile? Landscape or Portrait?
+
+Breakout -- 1920 by 1080, landscape
+ 
+Jetpack Joyride
+make dying fun? bouncing and ragdoll
+slot machine after losing (win a bonus)
+screenshots
+friends scores
+shop to spend coins
+
+ 

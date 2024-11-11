@@ -137,6 +137,11 @@ Stretch goals:
 
 Create 10 unique levels.
 
+Give more time to learn the controls
+
+Add buttons and moving platforms -- this would allow for multiple tiny guys!
+Level might need more height on the viewports.
+
 CHAINING -- Allow the player to employ multiple tiny friends at the same time, and chain them together.
 (If you have more than one come into contact, they automatically chain?)
 (throw a chain/group all at once?)
@@ -159,3 +164,27 @@ Fix viewport sizing and code for camera
 
 
 link into different shapes/colors
+
+
+=================================================================
+
+
+
+Feedback from comments:
+(play after MaximeG)
+
+Aspect resolution scaling needs fixed for different platforms
+(Camera can break--making it impossible to proceed.)
+
+Controls are wonky / need to introduce more gradually so player can understand,
+rather than throwing them all at once.
+
+Resetting each level should be possible with a key or button (currently, R restarts the entire game.)
+
+Music
+
+Level Design -- needs levels requiring multiple tiny friends
+(moving platforms? buttons you need to stand on to activate?)
+
+Odd collisions with hexagon, since it's a ball
+
