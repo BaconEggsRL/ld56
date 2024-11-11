@@ -22,7 +22,7 @@ SilentWolf="*res://addons/silent_wolf/SilentWolf.gd"
 
 [display]
 
-window/stretch/mode="viewport"
+window/stretch/mode="canvas_items"
 
 [editor_plugins]
 
